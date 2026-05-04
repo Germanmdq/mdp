@@ -5,10 +5,10 @@ import ServiceCard from "@/components/services/ServiceCard";
 import { CreditCard, Banknote, ShieldCheck, Plus, ArrowRight, TrendingUp, Briefcase, Smartphone, Tv, Coffee, Watch, ShoppingCart, Info, CheckCircle2, ChevronRight, Zap } from "lucide-react";
 
 export default function Home() {
-  const featuredProducts = products.filter(p => p.tags.includes("featured")).slice(0, 5);
-  const recentProducts = products.slice(5, 10);
-  const techProducts = products.filter(p => p.category_id === "Celulares y tecnología").slice(0, 5);
-  const toolProducts = products.filter(p => p.category_id === "Herramientas").slice(0, 5);
+  const featuredProducts = products.filter(p => p.tags.includes("featured")).slice(0, 6);
+  const recentProducts = products.slice(6, 12);
+  const techProducts = products.filter(p => p.category_id === "Celulares y tecnología").slice(0, 6);
+  const toolProducts = products.filter(p => p.category_id === "Herramientas").slice(0, 6);
   const homeServices = services.filter(s => s.featured).slice(0, 4);
 
   return (
@@ -76,7 +76,7 @@ export default function Home() {
             <h2 className="text-2xl font-light text-slate-800">Ofertas</h2>
             <Link href="/productos" className="text-sm font-semibold text-blue-500 hover:text-blue-700">Ver todas</Link>
           </div>
-          <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:gap-4 lg:grid-cols-5">
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:gap-4 lg:grid-cols-6">
             {featuredProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
@@ -121,7 +121,7 @@ export default function Home() {
             <h2 className="text-2xl font-light text-slate-800">Lo mejor en Tecnología</h2>
             <Link href="/productos?categoria=Celulares+y+tecnología" className="text-sm font-semibold text-blue-500 hover:text-blue-700">Ver tecnología</Link>
           </div>
-          <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:gap-4 lg:grid-cols-5">
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:gap-4 lg:grid-cols-6">
             {techProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
@@ -168,7 +168,7 @@ export default function Home() {
           <div className="mb-4 flex items-baseline gap-4">
             <h2 className="text-2xl font-light text-slate-800">Basado en tu última visita</h2>
           </div>
-          <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:gap-4 lg:grid-cols-5">
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:gap-4 lg:grid-cols-6">
             {recentProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
@@ -225,7 +225,7 @@ export default function Home() {
             <h2 className="text-2xl font-light text-slate-800">Especial Herramientas</h2>
             <Link href="/productos?categoria=Herramientas" className="text-sm font-semibold text-blue-500 hover:text-blue-700">Ver herramientas</Link>
           </div>
-          <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:gap-4 lg:grid-cols-5">
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:gap-4 lg:grid-cols-6">
             {toolProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
