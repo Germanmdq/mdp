@@ -16,10 +16,10 @@ export default function DashboardLayout({
     { label: "Mi Cuenta", icon: User, href: "/dashboard/usuario" },
     { label: "Mis Compras", icon: History, href: "/dashboard/usuario/compras" },
     { label: "Mis Favoritos", icon: Heart, href: "/dashboard/usuario/favoritos" },
-    { label: "Mensajes", icon: MessageSquare, href: "/chat" },
+    { label: "Mensajes", icon: MessageSquare, href: "/dashboard/chat" },
     { label: "Panel Vendedor", icon: ShoppingBag, href: "/dashboard/vendedor", color: "text-blue-600" },
     { label: "Panel Profesional", icon: Briefcase, href: "/dashboard/profesional", color: "text-purple-600" },
-    { label: "Métricas Admin", icon: PieChart, href: "/admin", color: "text-red-600" },
+    { label: "Métricas Admin", icon: PieChart, href: "/dashboard/admin", color: "text-red-600" },
   ];
 
   return (
@@ -28,8 +28,8 @@ export default function DashboardLayout({
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Sidebar */}
           <aside className="w-full lg:w-64 shrink-0">
-            <div className="rounded-3xl bg-white border border-slate-100 p-6 shadow-sm">
-              <div className="mb-8 flex items-center space-x-3 px-2">
+            <div className="rounded-3xl bg-white border border-slate-100 p-4 lg:p-6 shadow-sm sticky top-24">
+              <div className="hidden lg:flex mb-8 items-center space-x-3 px-2">
                 <div className="h-12 w-12 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-xl">
                   G
                 </div>
@@ -39,22 +39,25 @@ export default function DashboardLayout({
                 </div>
               </div>
 
-              <nav className="space-y-1">
-                {menuItems.map((item, i) => (
-                  <Link 
-                    key={i} 
-                    href={item.href}
-                    className={`flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${pathname === item.href ? 'bg-blue-600 text-white shadow-lg shadow-blue-100' : 'text-slate-600 hover:bg-slate-50'} ${item.color && pathname !== item.href ? item.color : ''}`}
-                  >
-                    <item.icon size={18} />
-                    <span>{item.label}</span>
-                  </Link>
-                ))}
+              <nav className="flex overflow-x-auto lg:flex-col gap-2 pb-2 lg:pb-0 scrollbar-hide lg:space-y-1">
+                {menuItems.map((item, i) => {
+                  const isActive = pathname === item.href || pathname?.startsWith(item.href + '/');
+                  return (
+                    <Link 
+                      key={i} 
+                      href={item.href}
+                      className={`flex items-center space-x-2 lg:space-x-3 px-4 py-2 lg:py-3 rounded-full lg:rounded-xl text-sm font-semibold whitespace-nowrap transition-all ${isActive ? 'bg-blue-600 text-white shadow-lg shadow-blue-100' : 'bg-slate-50 lg:bg-transparent text-slate-600 hover:bg-slate-100'} ${item.color && !isActive ? item.color : ''}`}
+                    >
+                      <item.icon size={18} className="shrink-0" />
+                      <span>{item.label}</span>
+                    </Link>
+                  );
+                })}
               </nav>
 
-              <hr className="my-6 border-slate-100" />
+              <hr className="hidden lg:block my-6 border-slate-100" />
 
-              <button className="flex w-full items-center space-x-3 px-4 py-3 rounded-xl text-sm font-semibold text-slate-400 hover:text-red-600 transition-colors">
+              <button className="hidden lg:flex w-full items-center space-x-3 px-4 py-3 rounded-xl text-sm font-semibold text-slate-400 hover:text-red-600 transition-colors">
                 <LogOut size={18} />
                 <span>Cerrar Sesión</span>
               </button>

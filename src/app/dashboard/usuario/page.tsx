@@ -4,7 +4,7 @@ import Link from "next/link";
 export default function UserDashboard() {
   return (
     <div className="space-y-6">
-      {/* Profile Header (Mercado Libre Style) */}
+      {/* Profile Header */}
       <div className="flex items-center gap-6 rounded-md bg-white p-6 shadow-sm">
         <div className="flex h-24 w-24 items-center justify-center rounded-full bg-slate-100 text-slate-400">
           <User size={48} />
@@ -14,7 +14,7 @@ export default function UserDashboard() {
           <div className="mt-2 flex items-center gap-2 text-sm text-slate-500">
             <span className="font-semibold text-blue-600">Nivel 4</span>
             <span>•</span>
-            <span>Mercado Puntos</span>
+            <span>MDP Puntos</span>
           </div>
         </div>
         <div className="hidden lg:block">

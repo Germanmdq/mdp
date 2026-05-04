@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { FavoritesProvider } from "@/contexts/FavoritesContext";
+import AIAssistant from "@/components/chat/AIAssistant";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,13 +20,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body className={`${inter.className} antialiased bg-[#ebebeb] flex flex-col min-h-screen`}>
+      <body className={`${inter.className} antialiased bg-[#050505] text-slate-200 flex flex-col min-h-screen`}>
         <FavoritesProvider>
           <Navbar />
           <main className="flex-1">
             {children}
           </main>
           <Footer />
+          <AIAssistant />
         </FavoritesProvider>
       </body>
     </html>

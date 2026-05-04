@@ -2,21 +2,43 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Search, ShoppingBag, User, Menu, X, Heart, Grid, ShoppingCart } from "lucide-react";
-import { useState } from "react";
+import { Search, ShoppingBag, User, Menu, X, Heart, Grid, ShoppingCart, Clock, TrendingUp } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import { products, PRODUCT_CATEGORIES } from "@/lib/data";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState("");
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const searchRef = useRef<HTMLFormElement>(null);
   const router = useRouter();
 
-  const handleSearch = (e: React.FormEvent) => {
+  // Close search dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+        setIsSearchFocused(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleSearch = (e: React.FormEvent, directQuery?: string) => {
     e.preventDefault();
-    if (query.trim()) {
-      router.push(`/productos?q=${encodeURIComponent(query.trim())}`);
+    const q = directQuery || query.trim();
+    if (q) {
+      router.push(`/productos?q=${encodeURIComponent(q)}`);
       setIsOpen(false);
+      setIsSearchFocused(false);
     }
   };
+
+  // Live search logic
+  const searchLower = query.toLowerCase().trim();
+  const matchingCategories = searchLower ? PRODUCT_CATEGORIES.filter(c => c.toLowerCase().includes(searchLower)).slice(0, 2) : [];
+  const matchingProducts = searchLower ? products.filter(p => p.title.toLowerCase().includes(searchLower)).slice(0, 4) : [];
+  const showPreview = isSearchFocused && searchLower.length > 0 && (matchingCategories.length > 0 || matchingProducts.length > 0);
 
   return (
     <header className="sticky top-0 z-50 w-full bg-blue-600 shadow-md">
@@ -40,23 +62,71 @@ export default function Navbar() {
           </Link>
 
           {/* Search — always visible, full width on mobile */}
-          <form onSubmit={handleSearch} className="flex-1">
-            <div className="flex h-9 w-full overflow-hidden rounded-full bg-white shadow-sm md:h-11">
+          <form ref={searchRef} onSubmit={(e) => handleSearch(e)} className="flex-1 relative">
+            <div className={`flex h-9 w-full overflow-hidden bg-white shadow-sm md:h-11 ${showPreview ? 'rounded-t-2xl border-b border-slate-100' : 'rounded-full'}`}>
               <input
                 type="text"
                 value={query}
                 onChange={e => setQuery(e.target.value)}
-                placeholder="Buscar..."
+                onFocus={() => setIsSearchFocused(true)}
+                placeholder="Buscar productos, marcas y más..."
                 className="flex-1 border-none bg-transparent px-4 text-sm text-slate-900 outline-none placeholder:text-slate-400"
               />
               <button
                 type="submit"
-                className="rounded-full bg-blue-800 px-4 font-bold text-white transition-colors hover:bg-blue-900 md:px-6"
+                className="bg-blue-800 px-4 font-bold text-white transition-colors hover:bg-blue-900 md:px-6"
               >
                 <Search size={16} className="md:hidden" />
                 <span className="hidden md:inline">Buscar</span>
               </button>
             </div>
+
+            {/* Live Search Preview Dropdown */}
+            {showPreview && (
+              <div className="absolute top-full left-0 w-full bg-white rounded-b-2xl shadow-xl border border-t-0 border-slate-100 overflow-hidden z-50">
+                <div className="py-2">
+                  {/* Categories */}
+                  {matchingCategories.length > 0 && (
+                    <div className="mb-2">
+                      <div className="px-4 py-1 text-[10px] font-bold uppercase tracking-widest text-slate-400">Categorías</div>
+                      {matchingCategories.map(cat => (
+                        <button
+                          key={cat}
+                          type="button"
+                          onClick={() => handleSearch({ preventDefault: () => {} } as any, cat)}
+                          className="w-full flex items-center px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors"
+                        >
+                          <Search size={14} className="mr-3 text-slate-400" />
+                          <span className="font-semibold">{cat}</span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                  
+                  {/* Products */}
+                  {matchingProducts.length > 0 && (
+                    <div>
+                      <div className="px-4 py-1 text-[10px] font-bold uppercase tracking-widest text-slate-400">Productos sugeridos</div>
+                      {matchingProducts.map(prod => (
+                        <button
+                          key={prod.id}
+                          type="button"
+                          onClick={() => {
+                            router.push(`/productos/${prod.id}`);
+                            setIsSearchFocused(false);
+                            setQuery("");
+                          }}
+                          className="w-full flex items-center px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors text-left"
+                        >
+                          <Clock size={14} className="mr-3 text-slate-400 shrink-0" />
+                          <span className="truncate">{prod.title}</span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
           </form>
 
           {/* Mobile: cart + menu */}

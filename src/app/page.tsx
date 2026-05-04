@@ -5,7 +5,20 @@ import { useEffect, useState } from "react";
 import { products, services, PRODUCT_CATEGORIES } from "@/lib/data";
 import ProductCard from "@/components/products/ProductCard";
 import ServiceCard from "@/components/services/ServiceCard";
-import { CreditCard, Banknote, ShieldCheck, Plus, ArrowRight, TrendingUp, Briefcase, Smartphone, Tv, Coffee, Watch, ShoppingCart, Info, CheckCircle2, ChevronRight, Zap } from "lucide-react";
+import { CreditCard, Banknote, ShieldCheck, Plus, ArrowRight, TrendingUp, Briefcase, Smartphone, Tv, Coffee, Watch, ShoppingCart, Info, CheckCircle2, ChevronRight, Zap, Monitor, Armchair, Wrench, Shirt, Bike, Baby, Lamp, Package, Store } from "lucide-react";
+
+const categoryIcons: Record<string, React.ElementType> = {
+  "Celulares y tecnología": Smartphone,
+  "Electrodomésticos": Monitor,
+  "Hogar y muebles": Armchair,
+  "Herramientas": Wrench,
+  "Indumentaria": Shirt,
+  "Bicicletas y movilidad": Bike,
+  "Artículos infantiles": Baby,
+  "Decoración": Lamp,
+  "Productos de emprendedores": Package,
+  "Comercios locales": Store,
+};
 
 export default function Home() {
   const featuredProducts = products.filter(p => p.tags.includes("featured")).slice(0, 6);
@@ -55,7 +68,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Payment Options Row (MercadoLibre style) */}
+      {/* Payment Options Row */}
       <div className="container relative mx-auto -mt-24 px-4 z-10 max-w-[1200px]">
         <div className="flex flex-col items-center justify-between gap-4 rounded-3xl bg-white p-4 shadow-sm md:flex-row md:p-6 lg:gap-8">
           <div className="flex w-full items-center gap-4 border-b border-slate-100 pb-4 md:w-auto md:border-b-0 md:border-r md:pb-0 md:pr-8">
@@ -151,7 +164,7 @@ export default function Home() {
       <section className="mt-12">
         <div className="container mx-auto px-4 max-w-[1200px]">
           <div className="mb-4 flex items-baseline gap-4">
-            <h2 className="text-2xl font-light text-slate-800">Beneficios MDP Puntos</h2>
+            <h2 className="text-2xl font-light text-slate-100">Beneficios MDP Puntos</h2>
             <Link href="/puntos" className="text-sm font-semibold text-blue-500 hover:text-blue-700">Conocé todos los beneficios</Link>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -184,7 +197,7 @@ export default function Home() {
       <section className="mt-12">
         <div className="container mx-auto px-4 max-w-[1200px]">
           <div className="mb-4 flex items-baseline gap-4">
-            <h2 className="text-2xl font-light text-slate-800">Basado en tu última visita</h2>
+            <h2 className="text-2xl font-light text-slate-100">Basado en tu última visita</h2>
           </div>
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:gap-4 lg:grid-cols-6">
             {historyProducts.map((product) => (
@@ -197,16 +210,19 @@ export default function Home() {
       {/* Categorías */}
       <section className="mt-12">
         <div className="container mx-auto px-4 max-w-[1200px]">
-          <h2 className="mb-6 text-2xl font-light text-slate-800">Categorías populares</h2>
+          <h2 className="mb-6 text-2xl font-light text-slate-100">Categorías populares</h2>
           <div className="grid grid-cols-2 md:grid-cols-5 overflow-hidden rounded-3xl bg-white shadow-sm border border-slate-200">
-            {PRODUCT_CATEGORIES.slice(0, 10).map((cat, i) => (
-              <Link key={i} href={`/productos?categoria=${cat}`} className="group flex flex-col items-center justify-center border-b border-r border-slate-100 p-8 transition-colors hover:bg-blue-50 last:border-r-0">
-                <div className="mb-4 text-blue-500 group-hover:text-blue-700">
-                  <Briefcase size={40} strokeWidth={1} />
-                </div>
-                <span className="text-center text-sm font-medium text-slate-600 group-hover:text-blue-600">{cat}</span>
-              </Link>
-            ))}
+            {PRODUCT_CATEGORIES.slice(0, 10).map((cat, i) => {
+              const Icon = categoryIcons[cat] || Briefcase;
+              return (
+                <Link key={i} href={`/productos?categoria=${cat}`} className="group flex flex-col items-center justify-center border-b border-r border-slate-100 p-8 transition-colors hover:bg-slate-50 last:border-r-0">
+                  <div className="mb-4 text-blue-500 group-hover:text-blue-600">
+                    <Icon size={40} strokeWidth={1} />
+                  </div>
+                  <span className="text-center text-sm font-medium text-slate-600 group-hover:text-blue-600">{cat}</span>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -215,8 +231,8 @@ export default function Home() {
       <section className="mt-12">
         <div className="container mx-auto px-4 max-w-[1200px]">
           <div className="mb-4 flex items-baseline gap-4">
-            <h2 className="text-2xl font-light text-slate-800">Tiendas oficiales</h2>
-            <Link href="/productos" className="text-sm font-semibold text-blue-500 hover:text-blue-700">Ver todas las tiendas</Link>
+            <h2 className="text-2xl font-light text-slate-100">Tiendas oficiales</h2>
+            <Link href="/productos" className="text-sm font-semibold text-blue-500 hover:text-blue-400">Ver todas las tiendas</Link>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
@@ -240,8 +256,8 @@ export default function Home() {
       <section className="mt-12">
         <div className="container mx-auto px-4 max-w-[1200px]">
           <div className="mb-4 flex items-baseline gap-4">
-            <h2 className="text-2xl font-light text-slate-800">Especial Herramientas</h2>
-            <Link href="/productos?categoria=Herramientas" className="text-sm font-semibold text-blue-500 hover:text-blue-700">Ver herramientas</Link>
+            <h2 className="text-2xl font-light text-slate-100">Especial Herramientas</h2>
+            <Link href="/productos?categoria=Herramientas" className="text-sm font-semibold text-blue-500 hover:text-blue-400">Ver herramientas</Link>
           </div>
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:gap-4 lg:grid-cols-6">
             {toolProducts.map((product) => (
@@ -255,8 +271,8 @@ export default function Home() {
       <section className="mt-12">
         <div className="container mx-auto px-4 max-w-[1200px]">
           <div className="mb-4 flex items-baseline gap-4">
-            <h2 className="text-2xl font-light text-slate-800">Servicios Destacados en tu zona</h2>
-            <Link href="/servicios" className="text-sm font-semibold text-blue-500 hover:text-blue-700">Ver todos</Link>
+            <h2 className="text-2xl font-light text-slate-100">Servicios Destacados en tu zona</h2>
+            <Link href="/servicios" className="text-sm font-semibold text-blue-500 hover:text-blue-400">Ver todos</Link>
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {homeServices.map((service) => (
@@ -267,38 +283,38 @@ export default function Home() {
       </section>
 
       {/* Footer Info Area (Like ML's bottom info section) */}
-      <section className="mt-16 bg-white py-12 border-t border-slate-200">
+      <section className="mt-16 bg-[#111111] py-12 border-t border-white/5">
         <div className="container mx-auto px-4 max-w-[1200px]">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
             <div className="flex flex-col items-center">
               <div className="mb-4 text-blue-500">
                 <CreditCard size={48} strokeWidth={1} />
               </div>
-              <h3 className="text-lg font-semibold text-slate-800 mb-2">Elegí cómo pagar</h3>
-              <p className="text-sm text-slate-500 px-4">
+              <h3 className="text-lg font-semibold text-slate-200 mb-2">Elegí cómo pagar</h3>
+              <p className="text-sm text-slate-400 px-4">
                 Podés pagar con tarjeta, débito, efectivo o hasta 12 cuotas sin tarjeta con MDP Crédito.
               </p>
-              <Link href="/como-pagar" className="mt-2 text-sm font-semibold text-blue-500 hover:text-blue-700">Cómo pagar con MDP Market</Link>
-            </div>
-            <div className="flex flex-col items-center">
-              <div className="mb-4 text-blue-500">
-                <ShoppingCart size={48} strokeWidth={1} />
-              </div>
-              <h3 className="text-lg font-semibold text-slate-800 mb-2">Envío gratis desde $25.000</h3>
-              <p className="text-sm text-slate-500 px-4">
-                Solo por estar registrado tenés envíos gratis en miles de productos seleccionados.
-              </p>
-              <Link href="/envios" className="mt-2 text-sm font-semibold text-blue-500 hover:text-blue-700">Conocé más sobre envíos</Link>
+              <Link href="/como-pagar" className="mt-2 text-sm font-semibold text-blue-500 hover:text-blue-400">Cómo pagar con MDP Market</Link>
             </div>
             <div className="flex flex-col items-center">
               <div className="mb-4 text-blue-500">
                 <ShieldCheck size={48} strokeWidth={1} />
               </div>
-              <h3 className="text-lg font-semibold text-slate-800 mb-2">Seguridad, de principio a fin</h3>
-              <p className="text-sm text-slate-500 px-4">
-                ¿No te gusta? ¡Devolvelo! En MDP Market, no hay nada que no puedas hacer, porque estás siempre protegido.
+              <h3 className="text-lg font-semibold text-slate-200 mb-2">Compra Protegida</h3>
+              <p className="text-sm text-slate-400 px-4">
+                Recibí el producto que esperabas o te devolvemos tu dinero. Operaciones seguras con respaldo local.
               </p>
-              <Link href="/compra-protegida" className="mt-2 text-sm font-semibold text-blue-500 hover:text-blue-700">Cómo te protegemos</Link>
+              <Link href="/compra-protegida" className="mt-2 text-sm font-semibold text-blue-500 hover:text-blue-400">Conocé sobre seguridad</Link>
+            </div>
+            <div className="flex flex-col items-center">
+              <div className="mb-4 text-blue-500">
+                <Banknote size={48} strokeWidth={1} />
+              </div>
+              <h3 className="text-lg font-semibold text-slate-200 mb-2">Envíos gratis y rápidos</h3>
+              <p className="text-sm text-slate-400 px-4">
+                Solo por estar registrado en MDP Market tenés envíos gratis en miles de productos seleccionados.
+              </p>
+              <Link href="/envios" className="mt-2 text-sm font-semibold text-blue-500 hover:text-blue-400">Conocé más de los envíos</Link>
             </div>
           </div>
         </div>

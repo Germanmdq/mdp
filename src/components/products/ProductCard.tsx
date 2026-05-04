@@ -15,15 +15,9 @@ export default function ProductCard({ product }: ProductCardProps) {
 
   return (
     <Link href={`/productos/${product.id}`} className="h-full">
-      <div className={`group relative flex h-full flex-col overflow-hidden rounded-2xl border bg-white shadow-sm transition-all hover:shadow-lg hover:-translate-y-1 ${product.tags.includes("featured") ? 'border-amber-200 ring-1 ring-amber-100' : 'border-slate-100'}`}>
+      <div className="group relative flex h-full flex-col overflow-hidden rounded-2xl border bg-white shadow-sm transition-all hover:shadow-lg hover:-translate-y-1 border-slate-100">
         {/* Badges */}
         <div className="absolute left-3 top-3 z-10 flex flex-col gap-2">
-          {product.tags.includes("featured") && (
-            <div className="flex items-center space-x-1 rounded-full bg-amber-500 px-2.5 py-1 text-[10px] font-bold text-white shadow-sm">
-              <Zap size={10} fill="currentColor" />
-              <span>DESTACADO</span>
-            </div>
-          )}
           {product.condition === "new" && (
             <div className="w-fit rounded-full bg-blue-600 px-2.5 py-1 text-[10px] font-bold text-white shadow-sm">
               NUEVO
