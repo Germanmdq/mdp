@@ -12,10 +12,10 @@ export default function SellerDashboard() {
           <p className="text-sm text-slate-500">Últimos 30 días</p>
         </div>
         <div className="flex gap-2">
-          <Link href="/productos?vendedor=me" className="rounded border border-blue-500 px-4 py-2 text-sm font-semibold text-blue-500 hover:bg-blue-50 transition-colors">
+          <Link href="/productos?vendedor=me" className="rounded-full border border-blue-500 px-5 py-2 text-sm font-semibold text-blue-500 hover:bg-blue-50 transition-colors">
             Ver publicaciones
           </Link>
-          <button className="rounded bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 transition-colors">
+          <button className="rounded-full bg-blue-600 px-5 py-2 text-sm font-semibold text-white hover:bg-blue-700 transition-colors">
             Publicar producto
           </button>
         </div>
@@ -23,7 +23,7 @@ export default function SellerDashboard() {
 
       {/* Metrics Row */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="rounded-md bg-white p-6 shadow-sm">
+        <div className="rounded-2xl bg-white p-6 shadow-sm">
           <div className="flex items-center gap-3 mb-2">
             <DollarSign size={20} className="text-slate-400" />
             <span className="text-sm font-medium text-slate-600">Ingresos</span>
@@ -31,7 +31,7 @@ export default function SellerDashboard() {
           <div className="text-2xl font-semibold text-slate-900">$4.520.000</div>
           <div className="mt-2 text-xs font-medium text-green-600">+12% vs mes anterior</div>
         </div>
-        <div className="rounded-md bg-white p-6 shadow-sm">
+        <div className="rounded-2xl bg-white p-6 shadow-sm">
           <div className="flex items-center gap-3 mb-2">
             <ShoppingBag size={20} className="text-slate-400" />
             <span className="text-sm font-medium text-slate-600">Ventas</span>
@@ -39,7 +39,7 @@ export default function SellerDashboard() {
           <div className="text-2xl font-semibold text-slate-900">142</div>
           <div className="mt-2 text-xs font-medium text-green-600">+5% vs mes anterior</div>
         </div>
-        <div className="rounded-md bg-white p-6 shadow-sm">
+        <div className="rounded-2xl bg-white p-6 shadow-sm">
           <div className="flex items-center gap-3 mb-2">
             <Package size={20} className="text-slate-400" />
             <span className="text-sm font-medium text-slate-600">Publicaciones</span>
@@ -47,7 +47,7 @@ export default function SellerDashboard() {
           <div className="text-2xl font-semibold text-slate-900">48</div>
           <div className="mt-2 text-xs font-medium text-slate-500">3 para revisar</div>
         </div>
-        <div className="rounded-md bg-white p-6 shadow-sm">
+        <div className="rounded-2xl bg-white p-6 shadow-sm">
           <div className="flex items-center gap-3 mb-2">
             <Star size={20} className="text-slate-400" />
             <span className="text-sm font-medium text-slate-600">Reputación</span>
@@ -63,7 +63,7 @@ export default function SellerDashboard() {
       </div>
 
       {/* Tareas / Alertas */}
-      <div className="rounded-md bg-white shadow-sm overflow-hidden">
+      <div className="rounded-2xl bg-white shadow-sm overflow-hidden">
         <div className="border-b border-slate-100 p-6 flex items-center gap-2">
           <AlertCircle size={20} className="text-amber-500" />
           <h2 className="text-lg font-semibold text-slate-900">Tareas pendientes</h2>
@@ -74,7 +74,7 @@ export default function SellerDashboard() {
               <div className="font-semibold text-slate-800">Prepará 3 envíos</div>
               <div className="text-sm text-slate-500">Tenés ventas listas para despachar por Correo local.</div>
             </div>
-            <button className="rounded bg-blue-100 px-4 py-2 text-sm font-semibold text-blue-600 hover:bg-blue-200">
+            <button className="rounded-full bg-blue-100 px-4 py-2 text-sm font-semibold text-blue-600 hover:bg-blue-200">
               Ver ventas
             </button>
           </div>
@@ -83,7 +83,7 @@ export default function SellerDashboard() {
               <div className="font-semibold text-slate-800">Respondé 2 preguntas</div>
               <div className="text-sm text-slate-500">Mantener un buen tiempo de respuesta mejora tu posicionamiento.</div>
             </div>
-            <button className="rounded border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50">
+            <button className="rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50">
               Ir a preguntas
             </button>
           </div>

@@ -41,16 +41,22 @@ function ProductosPage() {
     router.push("/productos");
   };
 
-  const filteredProducts = products.filter((p) => {
-    if (categoryFilter && p.category_id !== categoryFilter) return false;
-    if (searchQuery && !p.title.toLowerCase().includes(searchQuery.toLowerCase()) &&
-        !p.category_id.toLowerCase().includes(searchQuery.toLowerCase()) &&
-        !p.seller.nickname.toLowerCase().includes(searchQuery.toLowerCase())) return false;
-    if (featuredOnly && !p.tags.includes("featured")) return false;
-    if (minPrice && p.price < parseInt(minPrice)) return false;
-    if (maxPrice && p.price > parseInt(maxPrice)) return false;
-    return true;
-  });
+  const filteredProducts = products
+    .filter((p) => {
+      if (categoryFilter && p.category_id !== categoryFilter) return false;
+      if (searchQuery && !p.title.toLowerCase().includes(searchQuery.toLowerCase()) &&
+          !p.category_id.toLowerCase().includes(searchQuery.toLowerCase()) &&
+          !p.seller.nickname.toLowerCase().includes(searchQuery.toLowerCase())) return false;
+      if (featuredOnly && !p.tags.includes("featured")) return false;
+      if (minPrice && p.price < parseInt(minPrice)) return false;
+      if (maxPrice && p.price > parseInt(maxPrice)) return false;
+      return true;
+    })
+    .sort((a, b) => {
+      const aFeat = a.tags.includes("featured") ? 1 : 0;
+      const bFeat = b.tags.includes("featured") ? 1 : 0;
+      return bFeat - aFeat;
+    });
 
   const hasFilters = categoryFilter || searchQuery || minPrice || maxPrice || featuredOnly;
 

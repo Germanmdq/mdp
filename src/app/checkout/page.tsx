@@ -5,6 +5,7 @@ import { products, services } from "@/lib/data";
 import { ShieldCheck, CreditCard, CheckCircle2, Truck, Calendar, MapPin, Store, ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { useState, Suspense } from "react";
+import DeliveryEstimator from "@/components/checkout/DeliveryEstimator";
 
 function CheckoutContent() {
   const searchParams = useSearchParams();
@@ -62,16 +63,16 @@ function CheckoutContent() {
               <>
                 <div className="rounded-md bg-white p-6 shadow-sm border border-slate-200">
                   <h2 className="text-lg font-semibold text-slate-800 mb-4">Recibir compra</h2>
-                  <div className="rounded border border-blue-500 bg-blue-50/50 p-4 relative cursor-pointer">
+                <div className="rounded-2xl border border-blue-500 bg-blue-50/50 p-4 relative cursor-pointer">
                     <div className="flex gap-4">
-                      <Truck className="text-blue-500 mt-1" />
-                      <div>
-                        <div className="font-semibold text-green-600">Llega mañana a tu domicilio</div>
-                        <div className="text-sm text-slate-600">En envío local (Mar del Plata)</div>
-                        <div className="mt-1 text-sm font-semibold text-slate-900">Gratis</div>
+                      <Truck className="text-blue-500 mt-1 shrink-0" />
+                      <div className="flex-1">
+                        <DeliveryEstimator />
+                        <div className="mt-2 text-sm text-slate-500">Envío local · Mar del Plata</div>
+                        <div className="mt-1 text-sm font-semibold text-green-600">Gratis</div>
                       </div>
                     </div>
-                    <div className="absolute top-4 right-4 h-5 w-5 rounded-full border-5 border-blue-500 flex items-center justify-center">
+                    <div className="absolute top-4 right-4 h-5 w-5 rounded-full border-2 border-blue-500 flex items-center justify-center">
                       <div className="h-2 w-2 rounded-full bg-blue-500"></div>
                     </div>
                   </div>
@@ -79,7 +80,7 @@ function CheckoutContent() {
 
                 <div className="rounded-md bg-white p-6 shadow-sm border border-slate-200">
                   <h2 className="text-lg font-semibold text-slate-800 mb-4">Retirar compra</h2>
-                  <div className="rounded border border-slate-200 p-4 relative cursor-pointer hover:bg-slate-50">
+                <div className="rounded-2xl border border-slate-200 p-4 relative cursor-pointer hover:bg-slate-50">
                     <div className="flex gap-4">
                       <Store className="text-slate-400 mt-1" />
                       <div>
@@ -90,7 +91,7 @@ function CheckoutContent() {
                     </div>
                     <div className="absolute top-4 right-4 h-5 w-5 rounded-full border-2 border-slate-300"></div>
                   </div>
-                  <div className="rounded border border-slate-200 p-4 relative cursor-pointer mt-3 hover:bg-slate-50">
+                  <div className="rounded-2xl border border-slate-200 p-4 relative cursor-pointer mt-3 hover:bg-slate-50">
                     <div className="flex gap-4">
                       <MapPin className="text-slate-400 mt-1" />
                       <div>

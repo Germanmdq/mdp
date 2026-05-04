@@ -26,11 +26,9 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
           <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
             <div className="relative h-40 w-40 shrink-0 overflow-hidden rounded-3xl border-4 border-white shadow-xl">
               <img src={service.image} alt={service.professionalName} className="h-full w-full object-cover" />
-              {service.verified && (
-                <div className="absolute bottom-2 right-2 rounded-full bg-blue-600 p-1.5 text-white shadow-lg">
-                  <ShieldCheck size={24} />
-                </div>
-              )}
+              <div className="absolute bottom-2 right-2 rounded-full bg-blue-600 p-1.5 text-white shadow-lg">
+                <ShieldCheck size={20} />
+              </div>
             </div>
             
             <div className="flex-1 text-center md:text-left">

@@ -116,7 +116,7 @@ export default async function OperationTrackingPage({ params }: { params: Promis
               <div className="rounded-3xl bg-slate-900 p-8 text-white">
                 <div className="flex items-center space-x-3 mb-6">
                   <ShieldCheck className="text-blue-500" size={32} />
-                  <h3 className="text-lg font-bold">Pago Entregado MDP</h3>
+                  <h3 className="text-lg font-bold">Compra Protegida MDP</h3>
                 </div>
                 <p className="text-sm text-slate-400 leading-relaxed mb-6">
                   Tu dinero está seguro. MDP Market actúa como intermediario confiable para garantizar que la operación sea exitosa para ambas partes.

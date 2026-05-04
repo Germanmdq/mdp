@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { products, services, PRODUCT_CATEGORIES } from "@/lib/data";
 import ProductCard from "@/components/products/ProductCard";
 import ServiceCard from "@/components/services/ServiceCard";
@@ -6,10 +9,25 @@ import { CreditCard, Banknote, ShieldCheck, Plus, ArrowRight, TrendingUp, Briefc
 
 export default function Home() {
   const featuredProducts = products.filter(p => p.tags.includes("featured")).slice(0, 6);
-  const recentProducts = products.slice(6, 12);
   const techProducts = products.filter(p => p.category_id === "Celulares y tecnología").slice(0, 6);
   const toolProducts = products.filter(p => p.category_id === "Herramientas").slice(0, 6);
   const homeServices = services.filter(s => s.featured).slice(0, 4);
+
+  const [historyProducts, setHistoryProducts] = useState(products.slice(6, 12));
+
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem("mdp_viewed_products");
+      if (stored) {
+        const ids: string[] = JSON.parse(stored);
+        const viewed = ids
+          .map(id => products.find(p => p.id === id))
+          .filter(Boolean)
+          .slice(0, 6) as typeof products;
+        if (viewed.length >= 2) setHistoryProducts(viewed);
+      }
+    } catch {}
+  }, []);
 
   return (
     <div className="flex flex-col pb-20 bg-[#ebebeb] min-h-screen">
@@ -44,21 +62,21 @@ export default function Home() {
             <CreditCard size={32} className="text-blue-500" />
             <div>
               <div className="font-semibold text-slate-800">Tarjeta de crédito</div>
-              <Link href="#" className="text-sm text-blue-500 hover:text-blue-700">Ver promociones bancarias</Link>
+              <Link href="/como-pagar" className="text-sm text-blue-500 hover:text-blue-700">Ver promociones bancarias</Link>
             </div>
           </div>
           <div className="flex w-full items-center gap-4 border-b border-slate-100 pb-4 md:w-auto md:border-b-0 md:border-r md:pb-0 md:pr-8">
             <Banknote size={32} className="text-blue-500" />
             <div>
               <div className="font-semibold text-slate-800">Efectivo</div>
-              <Link href="#" className="text-sm text-blue-500 hover:text-blue-700">Ver puntos de pago</Link>
+              <Link href="/como-pagar" className="text-sm text-blue-500 hover:text-blue-700">Ver puntos de pago</Link>
             </div>
           </div>
           <div className="flex w-full items-center gap-4 border-b border-slate-100 pb-4 md:w-auto md:border-b-0 md:border-r md:pb-0 md:pr-8">
             <ShieldCheck size={32} className="text-blue-500" />
             <div>
               <div className="font-semibold text-slate-800">Pago Protegido</div>
-              <Link href="#" className="text-sm text-blue-500 hover:text-blue-700">Cómo te protegemos</Link>
+              <Link href="/compra-protegida" className="text-sm text-blue-500 hover:text-blue-700">Cómo te protegemos</Link>
             </div>
           </div>
           <div className="hidden w-full items-center justify-end md:flex md:w-auto md:flex-1">
@@ -134,7 +152,7 @@ export default function Home() {
         <div className="container mx-auto px-4 max-w-[1200px]">
           <div className="mb-4 flex items-baseline gap-4">
             <h2 className="text-2xl font-light text-slate-800">Beneficios MDP Puntos</h2>
-            <Link href="#" className="text-sm font-semibold text-blue-500 hover:text-blue-700">Conocé todos los beneficios</Link>
+            <Link href="/puntos" className="text-sm font-semibold text-blue-500 hover:text-blue-700">Conocé todos los beneficios</Link>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="rounded-3xl bg-gradient-to-br from-indigo-900 to-purple-900 p-6 text-white shadow-sm flex flex-col justify-between h-48 transition-transform hover:-translate-y-1">
@@ -169,7 +187,7 @@ export default function Home() {
             <h2 className="text-2xl font-light text-slate-800">Basado en tu última visita</h2>
           </div>
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:gap-4 lg:grid-cols-6">
-            {recentProducts.map((product) => (
+            {historyProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>
@@ -202,12 +220,12 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              { name: "Samsung", logo: "S", bg: "bg-black" },
-              { name: "Nike", logo: "N", bg: "bg-slate-900" },
-              { name: "Sony", logo: "S", bg: "bg-blue-900" },
-              { name: "Adidas", logo: "A", bg: "bg-slate-800" }
+              { name: "Samsung", logo: "S", bg: "bg-black", q: "SAMSUNG_STORE" },
+              { name: "Nike", logo: "N", bg: "bg-slate-900", q: "NIKE_STORE" },
+              { name: "Sony", logo: "S", bg: "bg-blue-900", q: "SONY_STORE" },
+              { name: "Adidas", logo: "A", bg: "bg-slate-800", q: "ADIDAS_STORE" }
             ].map((store, i) => (
-              <Link key={i} href="/productos" className="rounded-3xl bg-white p-6 shadow-sm flex items-center justify-center gap-4 hover:shadow-md transition-shadow">
+              <Link key={i} href={`/productos?q=${store.q}`} className="rounded-3xl bg-white p-6 shadow-sm flex items-center justify-center gap-4 hover:shadow-md transition-shadow">
                 <div className={`flex h-12 w-12 items-center justify-center rounded-full ${store.bg} text-xl font-black text-white`}>
                   {store.logo}
                 </div>
@@ -260,7 +278,7 @@ export default function Home() {
               <p className="text-sm text-slate-500 px-4">
                 Podés pagar con tarjeta, débito, efectivo o hasta 12 cuotas sin tarjeta con MDP Crédito.
               </p>
-              <Link href="#" className="mt-2 text-sm font-semibold text-blue-500 hover:text-blue-700">Cómo pagar con MDP Market</Link>
+              <Link href="/como-pagar" className="mt-2 text-sm font-semibold text-blue-500 hover:text-blue-700">Cómo pagar con MDP Market</Link>
             </div>
             <div className="flex flex-col items-center">
               <div className="mb-4 text-blue-500">
@@ -270,7 +288,7 @@ export default function Home() {
               <p className="text-sm text-slate-500 px-4">
                 Solo por estar registrado tenés envíos gratis en miles de productos seleccionados.
               </p>
-              <Link href="#" className="mt-2 text-sm font-semibold text-blue-500 hover:text-blue-700">Conocé más sobre envíos</Link>
+              <Link href="/envios" className="mt-2 text-sm font-semibold text-blue-500 hover:text-blue-700">Conocé más sobre envíos</Link>
             </div>
             <div className="flex flex-col items-center">
               <div className="mb-4 text-blue-500">
@@ -280,7 +298,7 @@ export default function Home() {
               <p className="text-sm text-slate-500 px-4">
                 ¿No te gusta? ¡Devolvelo! En MDP Market, no hay nada que no puedas hacer, porque estás siempre protegido.
               </p>
-              <Link href="#" className="mt-2 text-sm font-semibold text-blue-500 hover:text-blue-700">Cómo te protegemos</Link>
+              <Link href="/compra-protegida" className="mt-2 text-sm font-semibold text-blue-500 hover:text-blue-700">Cómo te protegemos</Link>
             </div>
           </div>
         </div>

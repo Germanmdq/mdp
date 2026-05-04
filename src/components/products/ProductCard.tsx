@@ -14,8 +14,8 @@ export default function ProductCard({ product }: ProductCardProps) {
   const isFav = isProductFavorite(product.id);
 
   return (
-    <Link href={`/productos/${product.id}`}>
-      <div className={`group relative flex flex-col overflow-hidden rounded-2xl border bg-white shadow-sm transition-all hover:shadow-lg hover:-translate-y-1 ${product.tags.includes("featured") ? 'border-amber-200 ring-1 ring-amber-100' : 'border-slate-100'}`}>
+    <Link href={`/productos/${product.id}`} className="h-full">
+      <div className={`group relative flex h-full flex-col overflow-hidden rounded-2xl border bg-white shadow-sm transition-all hover:shadow-lg hover:-translate-y-1 ${product.tags.includes("featured") ? 'border-amber-200 ring-1 ring-amber-100' : 'border-slate-100'}`}>
         {/* Badges */}
         <div className="absolute left-3 top-3 z-10 flex flex-col gap-2">
           {product.tags.includes("featured") && (
@@ -41,12 +41,13 @@ export default function ProductCard({ product }: ProductCardProps) {
           <Heart size={16} className={isFav ? "fill-red-500 text-red-500" : ""} />
         </button>
 
-        {/* Image */}
-        <div className="relative aspect-square overflow-hidden bg-slate-100">
+        {/* Image — fixed height so all cards align */}
+        <div className="relative h-40 w-full shrink-0 overflow-hidden bg-slate-100">
           <img
             src={product.thumbnail}
             alt={product.title}
             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+            loading="lazy"
           />
           {product.shipping.free_shipping && (
             <div className="absolute bottom-2 right-2 flex items-center space-x-1 rounded-lg bg-white/90 px-2 py-1 text-[10px] font-semibold text-blue-600 backdrop-blur-sm border border-blue-100">
@@ -58,8 +59,8 @@ export default function ProductCard({ product }: ProductCardProps) {
 
         {/* Content */}
         <div className="flex flex-1 flex-col p-4">
-          <div className="mb-1 text-[10px] font-medium uppercase tracking-wider text-slate-500">{product.category_id}</div>
-          <h3 className="mb-2 line-clamp-2 text-sm font-semibold text-slate-800 transition-colors group-hover:text-blue-600">
+          <div className="mb-1 text-[10px] font-medium uppercase tracking-wider text-slate-500 truncate">{product.category_id}</div>
+          <h3 className="mb-2 line-clamp-2 text-sm font-semibold text-slate-800 transition-colors group-hover:text-blue-600 min-h-[40px]">
             {product.title}
           </h3>
           

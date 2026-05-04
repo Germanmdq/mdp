@@ -4,7 +4,7 @@ import { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { services, SERVICE_CATEGORIES, ZONES } from "@/lib/data";
 import ServiceCard from "@/components/services/ServiceCard";
-import { Search, Filter, ShieldCheck, Star } from "lucide-react";
+import { Search, Star } from "lucide-react";
 
 function ServiciosPage() {
   const searchParams = useSearchParams();
@@ -14,7 +14,7 @@ function ServiciosPage() {
   const [categoryFilter, setCategoryFilter] = useState<string>(searchParams.get("categoria") || "");
   const [zoneFilter, setZoneFilter] = useState<string>("");
   const [featuredOnly, setFeaturedOnly] = useState<boolean>(false);
-  const [verifiedOnly, setVerifiedOnly] = useState<boolean>(false);
+
 
   // Sync category from URL if it changes
   useEffect(() => {
@@ -33,13 +33,14 @@ function ServiciosPage() {
     }
   };
 
-  const filteredServices = services.filter((s) => {
-    if (categoryFilter && s.category !== categoryFilter) return false;
-    if (zoneFilter && !s.zone.includes(zoneFilter as any)) return false;
-    if (featuredOnly && !s.featured) return false;
-    if (verifiedOnly && !s.verified) return false;
-    return true;
-  });
+  const filteredServices = services
+    .filter((s) => {
+      if (categoryFilter && s.category !== categoryFilter) return false;
+      if (zoneFilter && !s.zone.includes(zoneFilter as any)) return false;
+      if (featuredOnly && !s.featured) return false;
+      return true;
+    })
+    .sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
 
   return (
     <div className="bg-slate-50 min-h-screen pb-20">
@@ -47,7 +48,7 @@ function ServiciosPage() {
       <div className="bg-white border-b py-8">
         <div className="container mx-auto px-4">
           <h1 className="text-3xl font-bold text-slate-900 mb-2">Profesionales y Servicios</h1>
-          <p className="text-slate-500">Contratá oficios verificados con garantía de satisfacción en tu zona.</p>
+          <p className="text-slate-500">Todos nuestros profesionales están verificados. Contratá con garantía de satisfacción en tu zona.</p>
         </div>
       </div>
 
@@ -99,27 +100,14 @@ function ServiciosPage() {
                 />
                 <span className="text-sm font-semibold text-slate-700">Mejor calificados</span>
               </label>
-              <label className="flex items-center space-x-3 cursor-pointer">
-                <input 
-                  type="checkbox" 
-                  checked={verifiedOnly}
-                  onChange={(e) => setVerifiedOnly(e.target.checked)}
-                  className="h-4 w-4 rounded border-slate-300 text-green-600 focus:ring-green-500" 
-                />
-                <div className="flex items-center text-sm font-semibold text-slate-700">
-                  <span>Solo verificados</span>
-                  <ShieldCheck size={14} className="ml-1 text-green-500" />
-                </div>
-              </label>
             </div>
 
-            {(categoryFilter || zoneFilter || featuredOnly || verifiedOnly) && (
+            {(categoryFilter || zoneFilter || featuredOnly) && (
               <button 
                 onClick={() => {
                   setCategoryFilter("");
                   setZoneFilter("");
                   setFeaturedOnly(false);
-                  setVerifiedOnly(false);
                   router.push("/servicios");
                 }}
                 className="w-full mt-4 py-2 text-sm font-bold text-red-500 hover:bg-red-50 rounded-lg transition-colors"

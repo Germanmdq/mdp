@@ -44,12 +44,10 @@ export default function ServiceCard({ service }: ServiceCardProps) {
             alt={service.professionalName}
             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
           />
-          {service.verified && (
-            <div className="absolute bottom-3 right-3 flex items-center gap-1 rounded-full bg-white/90 px-2 py-1 text-[10px] font-bold text-green-600 backdrop-blur-sm shadow-sm">
-              <ShieldCheck size={12} />
-              VERIFICADO
-            </div>
-          )}
+          <div className="absolute bottom-3 right-3 flex items-center gap-1 rounded-full bg-blue-600 px-2 py-1 text-[10px] font-bold text-white shadow-sm">
+            <ShieldCheck size={12} />
+            MDP Verificado
+          </div>
         </div>
 
         {/* Content Info (Lower half) */}
