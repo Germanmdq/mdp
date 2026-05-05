@@ -63,7 +63,7 @@ export default async function OfertasPage() {
 
         {/* Empty State if no offers */}
         {ofertas.length === 0 && (
-          <div className="bg-white rounded-sm p-20 text-center shadow-sm">
+          <div className="bg-white rounded-2xl p-20 text-center shadow-sm">
              <div className="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-full bg-slate-50 text-slate-300">
                 <Percent size={32} />
              </div>

@@ -57,7 +57,7 @@ export default function AccesoPage() {
         </Link>
 
         {/* Login Card */}
-        <div className="bg-white rounded-sm shadow-[0_1px_3px_rgba(0,0,0,0.1)] overflow-hidden">
+        <div className="bg-white rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.1)] overflow-hidden">
           <div className="p-8 md:p-10">
             {/* Logo & Header */}
             <div className="flex flex-col items-center text-center mb-10">
@@ -72,7 +72,7 @@ export default function AccesoPage() {
             {/* Form */}
             <form onSubmit={handleLogin} className="space-y-6">
               {error && (
-                <div className="flex items-center gap-2 p-3 bg-red-50 border border-red-100 rounded-sm text-red-600 text-sm animate-in shake duration-300">
+                <div className="flex items-center gap-2 p-3 bg-red-50 border border-red-100 rounded-2xl text-red-600 text-sm animate-in shake duration-300">
                   <AlertCircle size={16} />
                   <span>{error}</span>
                 </div>
@@ -92,7 +92,7 @@ export default function AccesoPage() {
                       if (error) setError("");
                     }}
                     placeholder="nombre@ejemplo.com"
-                    className="w-full bg-slate-50 border border-slate-200 rounded-sm py-3.5 pl-12 pr-4 outline-none focus:bg-white focus:border-[#005eb8] focus:ring-4 focus:ring-blue-500/5 transition-all text-slate-800"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-2xl py-3.5 pl-12 pr-4 outline-none focus:bg-white focus:border-[#005eb8] focus:ring-4 focus:ring-blue-500/5 transition-all text-slate-800"
                   />
                 </div>
               </div>
@@ -110,7 +110,7 @@ export default function AccesoPage() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Tu contraseña"
-                    className="w-full bg-slate-50 border border-slate-200 rounded-sm py-3.5 pl-12 pr-12 outline-none focus:bg-white focus:border-[#005eb8] focus:ring-4 focus:ring-blue-500/5 transition-all text-slate-800"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-2xl py-3.5 pl-12 pr-12 outline-none focus:bg-white focus:border-[#005eb8] focus:ring-4 focus:ring-blue-500/5 transition-all text-slate-800"
                   />
                   <button 
                     type="button"
@@ -125,7 +125,7 @@ export default function AccesoPage() {
               <button 
                 disabled={loading}
                 type="submit"
-                className="w-full bg-[#005eb8] text-white py-4 rounded-sm font-bold shadow-lg shadow-blue-500/20 hover:bg-[#004a91] transition-all flex items-center justify-center gap-2 group disabled:opacity-50"
+                className="w-full bg-[#005eb8] text-white py-4 rounded-2xl font-bold shadow-lg shadow-blue-500/20 hover:bg-[#004a91] transition-all flex items-center justify-center gap-2 group disabled:opacity-50"
               >
                 {loading ? (
                   <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -148,11 +148,11 @@ export default function AccesoPage() {
               </div>
 
               <div className="grid grid-cols-2 gap-4">
-                <button className="flex items-center justify-center gap-2 py-3 border border-slate-200 rounded-sm hover:bg-slate-50 transition-colors text-sm font-semibold text-slate-600">
+                <button className="flex items-center justify-center gap-2 py-3 border border-slate-200 rounded-2xl hover:bg-slate-50 transition-colors text-sm font-semibold text-slate-600">
                   <img src="https://www.svgrepo.com/show/475656/google-color.svg" className="w-4 h-4" alt="Google" />
                   Google
                 </button>
-                <button className="flex items-center justify-center gap-2 py-3 border border-slate-200 rounded-sm hover:bg-slate-50 transition-colors text-sm font-semibold text-slate-600">
+                <button className="flex items-center justify-center gap-2 py-3 border border-slate-200 rounded-2xl hover:bg-slate-50 transition-colors text-sm font-semibold text-slate-600">
                   <img src="https://www.svgrepo.com/show/475647/facebook-color.svg" className="w-4 h-4" alt="Facebook" />
                   Facebook
                 </button>

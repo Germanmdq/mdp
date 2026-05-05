@@ -39,7 +39,7 @@ export default async function Home() {
             { title: "Ofertas del día", desc: "Ver todos los descuentos", icon: TrendingUp, color: "text-blue-600" },
             { title: "Envío Gratis", desc: "Por ser tu primera compra", icon: Package, color: "text-blue-600" },
           ].map((item, i) => (
-            <div key={i} className="flex items-center gap-3 rounded-sm bg-white p-4 shadow-sm md:p-6 transition-all hover:shadow-md cursor-pointer border border-transparent hover:border-blue-100">
+            <div key={i} className="flex items-center gap-3 rounded-2xl bg-white p-4 shadow-sm md:p-6 transition-all hover:shadow-md cursor-pointer border border-transparent hover:border-blue-100">
               <item.icon className={`shrink-0 ${item.color}`} size={24} strokeWidth={1.5} />
               <div className="overflow-hidden">
                 <div className="truncate text-xs font-bold text-slate-800 md:text-sm">{item.title}</div>
@@ -72,7 +72,7 @@ export default async function Home() {
         </section>
 
         {/* Ofertas */}
-        <section className="bg-white rounded-sm shadow-sm p-6 md:p-8">
+        <section className="bg-white rounded-2xl shadow-sm p-6 md:p-8">
           <div className="mb-6 flex items-baseline gap-4 border-b border-slate-100 pb-4">
             <h2 className="text-2xl font-light text-slate-800">Ofertas del día</h2>
             <Link href="/ofertas" className="text-sm font-semibold text-blue-500 hover:underline">Ver todas</Link>

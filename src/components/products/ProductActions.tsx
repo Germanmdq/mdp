@@ -27,7 +27,7 @@ export default function ProductActions({ product }: ProductActionsProps) {
     : null;
 
   return (
-    <div className="rounded-sm bg-white border border-slate-100 p-6 shadow-sm">
+    <div className="rounded-2xl bg-white border border-slate-100 p-6 shadow-sm">
       {product.condition === "new" && (
         <span className="mb-2 inline-block text-[12px] font-bold text-slate-400 uppercase">Nuevo | +100 vendidos</span>
       )}
@@ -62,7 +62,7 @@ export default function ProductActions({ product }: ProductActionsProps) {
 
       {/* Quantity Selector */}
       <div className="mb-8">
-         <div className="flex items-center gap-4 p-3 border rounded-sm">
+         <div className="flex items-center gap-4 p-3 border rounded-2xl">
             <span className="text-sm font-bold text-slate-800">Cantidad: {quantity}</span>
             <div className="flex gap-4 ml-auto">
               <button onClick={() => setQuantity(q => Math.max(1, q-1))}><Minus size={18} className="text-blue-500" /></button>
@@ -75,16 +75,16 @@ export default function ProductActions({ product }: ProductActionsProps) {
       <div className="space-y-3">
         <Link
           href={`/checkout?id=${product.id}&q=${quantity}`}
-          className="flex w-full items-center justify-center rounded-sm bg-blue-600 py-4 text-base font-bold text-white transition-all hover:bg-blue-700"
+          className="flex w-full items-center justify-center rounded-2xl bg-blue-600 py-4 text-base font-bold text-white transition-all hover:bg-blue-700"
         >
           Comprar ahora
         </Link>
-        <button className="flex w-full items-center justify-center gap-2 rounded-sm bg-blue-50 py-4 text-base font-bold text-blue-600 transition-all hover:bg-blue-100">
+        <button className="flex w-full items-center justify-center gap-2 rounded-2xl bg-blue-50 py-4 text-base font-bold text-blue-600 transition-all hover:bg-blue-100">
           Agregar al carrito
         </button>
         <button 
           onClick={triggerConsult}
-          className="flex w-full items-center justify-center gap-2 rounded-sm border border-transparent py-2 text-sm font-bold text-blue-600 hover:bg-blue-50 transition-all"
+          className="flex w-full items-center justify-center gap-2 rounded-2xl border border-transparent py-2 text-sm font-bold text-blue-600 hover:bg-blue-50 transition-all"
         >
           Consultar al vendedor
         </button>

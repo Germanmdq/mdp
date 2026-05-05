@@ -63,7 +63,7 @@ export default function CheckoutClient({ initialProduct, quantity }: CheckoutCon
             
             {step === 1 && (
               <>
-                <div className="rounded-sm bg-white p-6 shadow-sm border border-slate-200">
+                <div className="rounded-2xl bg-white p-6 shadow-sm border border-slate-200">
                   <h2 className="text-lg font-semibold text-slate-800 mb-4">Recibir compra</h2>
                   <div className="rounded-xl border border-blue-500 bg-blue-50/50 p-4 relative cursor-pointer">
                     <div className="flex gap-4">
@@ -80,7 +80,7 @@ export default function CheckoutClient({ initialProduct, quantity }: CheckoutCon
                   </div>
                 </div>
 
-                <div className="rounded-sm bg-white p-6 shadow-sm border border-slate-200">
+                <div className="rounded-2xl bg-white p-6 shadow-sm border border-slate-200">
                   <h2 className="text-lg font-semibold text-slate-800 mb-4">Retirar compra</h2>
                   <div className="rounded-xl border border-slate-200 p-4 relative cursor-pointer hover:bg-slate-50">
                     <div className="flex gap-4">
@@ -96,7 +96,7 @@ export default function CheckoutClient({ initialProduct, quantity }: CheckoutCon
                 </div>
                 
                 <div className="flex justify-end mt-4">
-                  <button onClick={() => setStep(2)} className="rounded-sm bg-blue-600 px-10 py-4 text-base font-bold text-white transition-all hover:bg-blue-700 shadow-lg shadow-blue-500/20">
+                  <button onClick={() => setStep(2)} className="rounded-2xl bg-blue-600 px-10 py-4 text-base font-bold text-white transition-all hover:bg-blue-700 shadow-lg shadow-blue-500/20">
                     Continuar
                   </button>
                 </div>
@@ -105,12 +105,12 @@ export default function CheckoutClient({ initialProduct, quantity }: CheckoutCon
 
             {step === 2 && (
               <>
-                <div className="rounded-sm bg-white shadow-sm border border-slate-200 overflow-hidden">
+                <div className="rounded-2xl bg-white shadow-sm border border-slate-200 overflow-hidden">
                   <div className="p-6 border-b border-slate-100">
                     <h2 className="text-lg font-semibold text-slate-800">Tarjetas de crédito</h2>
                     <p className="text-sm text-slate-500 mt-1">Hasta 12 cuotas sin interés</p>
                   </div>
-                  <div className="p-6 bg-blue-50/30 border border-blue-500 rounded-sm relative m-6 cursor-pointer">
+                  <div className="p-6 bg-blue-50/30 border border-blue-500 rounded-2xl relative m-6 cursor-pointer">
                     <div className="flex items-center gap-4">
                       <div className="flex h-10 w-14 items-center justify-center rounded border border-slate-200 bg-white">
                         <CreditCard className="text-blue-600" />
@@ -130,7 +130,7 @@ export default function CheckoutClient({ initialProduct, quantity }: CheckoutCon
                   <button onClick={() => setStep(1)} className="font-bold text-blue-600 hover:underline">
                     Volver
                   </button>
-                  <button onClick={handlePayment} disabled={isProcessing} className="rounded-sm bg-blue-600 px-10 py-4 text-base font-bold text-white transition-all hover:bg-blue-700 shadow-xl shadow-blue-500/20 disabled:opacity-50">
+                  <button onClick={handlePayment} disabled={isProcessing} className="rounded-2xl bg-blue-600 px-10 py-4 text-base font-bold text-white transition-all hover:bg-blue-700 shadow-xl shadow-blue-500/20 disabled:opacity-50">
                     {isProcessing ? "Procesando pago..." : "Confirmar compra"}
                   </button>
                 </div>
@@ -138,7 +138,7 @@ export default function CheckoutClient({ initialProduct, quantity }: CheckoutCon
             )}
 
             {step === 3 && (
-              <div className="rounded-sm bg-white p-12 text-center shadow-sm border border-slate-200 animate-in zoom-in duration-500">
+              <div className="rounded-2xl bg-white p-12 text-center shadow-sm border border-slate-200 animate-in zoom-in duration-500">
                 <div className="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-green-100 text-green-500">
                   <CheckCircle2 size={48} />
                 </div>
@@ -149,7 +149,7 @@ export default function CheckoutClient({ initialProduct, quantity }: CheckoutCon
                   <div className="font-bold text-slate-900 text-lg">Mañana antes de las 18:00hs</div>
                   <div className="text-sm text-slate-600 mt-1">Av. Luro 3200, Mar del Plata</div>
                 </div>
-                <Link href="/" className="mt-10 inline-block rounded-sm bg-blue-600 px-10 py-4 font-bold text-white hover:bg-blue-700 shadow-lg shadow-blue-500/20 transition-all">
+                <Link href="/" className="mt-10 inline-block rounded-2xl bg-blue-600 px-10 py-4 font-bold text-white hover:bg-blue-700 shadow-lg shadow-blue-500/20 transition-all">
                   Volver al inicio
                 </Link>
               </div>
@@ -158,7 +158,7 @@ export default function CheckoutClient({ initialProduct, quantity }: CheckoutCon
 
           {/* Summary */}
           <div className="lg:col-span-4">
-            <div className="rounded-sm bg-white p-6 shadow-sm border border-slate-200 sticky top-24">
+            <div className="rounded-2xl bg-white p-6 shadow-sm border border-slate-200 sticky top-24">
               <h3 className="mb-4 font-bold text-slate-800 pb-4 border-b border-slate-100 uppercase text-xs tracking-widest">Resumen de compra</h3>
               
               <div className="flex gap-4 pb-4 border-b border-slate-100">

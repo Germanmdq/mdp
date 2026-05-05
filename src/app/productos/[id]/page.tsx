@@ -62,7 +62,7 @@ export default async function ProductDetailPage({ params }: Props) {
           <div className="lg:col-span-8 space-y-6">
 
             {/* Gallery */}
-            <div className="rounded-sm bg-white border border-transparent shadow-sm overflow-hidden p-8">
+            <div className="rounded-2xl bg-white border border-transparent shadow-sm overflow-hidden p-8">
               <div className="relative flex justify-center">
                 <img
                   src={productImages[0]}
@@ -81,7 +81,7 @@ export default async function ProductDetailPage({ params }: Props) {
               {/* Thumbnail strip */}
               <div className="flex gap-3 mt-8">
                 {productImages.map((pic: string, i: number) => (
-                  <div key={i} className={`h-16 w-16 shrink-0 rounded-sm overflow-hidden border-2 cursor-pointer transition-all ${i === 0 ? 'border-blue-600' : 'border-slate-100 hover:border-slate-300'}`}>
+                  <div key={i} className={`h-16 w-16 shrink-0 rounded-2xl overflow-hidden border-2 cursor-pointer transition-all ${i === 0 ? 'border-blue-600' : 'border-slate-100 hover:border-slate-300'}`}>
                     <img src={pic} alt="" className="h-full w-full object-contain" />
                   </div>
                 ))}
@@ -89,7 +89,7 @@ export default async function ProductDetailPage({ params }: Props) {
             </div>
 
             {/* Description */}
-            <div className="rounded-sm bg-white border border-slate-100 p-8 shadow-sm">
+            <div className="rounded-2xl bg-white border border-slate-100 p-8 shadow-sm">
               <h2 className="text-xl font-normal text-slate-800 mb-6 border-b pb-4">Descripción</h2>
               <p className="text-slate-600 leading-relaxed whitespace-pre-wrap text-base">
                 {product.description}
@@ -97,7 +97,7 @@ export default async function ProductDetailPage({ params }: Props) {
             </div>
 
             {/* Specs / Attributes */}
-            <div className="rounded-sm bg-white border border-slate-100 p-8 shadow-sm">
+            <div className="rounded-2xl bg-white border border-slate-100 p-8 shadow-sm">
               <h2 className="text-xl font-normal text-slate-800 mb-6">Características principales</h2>
               <div className="grid grid-cols-1 divide-y divide-slate-100">
                 <div className="flex py-4">
@@ -114,7 +114,7 @@ export default async function ProductDetailPage({ params }: Props) {
             </div>
 
             {/* Q&A */}
-            <div className="rounded-sm bg-white border border-slate-100 p-8 shadow-sm">
+            <div className="rounded-2xl bg-white border border-slate-100 p-8 shadow-sm">
               <h2 className="text-xl font-normal text-slate-800 mb-6">Preguntas y respuestas</h2>
               <div className="space-y-6 mb-10">
                 <h3 className="text-base font-bold text-slate-800">Últimas realizadas</h3>
@@ -129,13 +129,13 @@ export default async function ProductDetailPage({ params }: Props) {
                 ))}
               </div>
               <div className="flex gap-4">
-                <input type="text" placeholder="Escribí tu pregunta..." className="flex-1 rounded-sm border border-slate-200 px-4 py-3 text-sm outline-none focus:border-blue-500" />
-                <button className="rounded-sm bg-blue-600 px-8 py-3 text-sm font-bold text-white hover:bg-blue-700 shadow-lg shadow-blue-500/10">Preguntar</button>
+                <input type="text" placeholder="Escribí tu pregunta..." className="flex-1 rounded-2xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-blue-500" />
+                <button className="rounded-2xl bg-blue-600 px-8 py-3 text-sm font-bold text-white hover:bg-blue-700 shadow-lg shadow-blue-500/10">Preguntar</button>
               </div>
             </div>
 
             {/* Reviews */}
-            <div className="rounded-sm bg-white border border-slate-100 p-8 shadow-sm">
+            <div className="rounded-2xl bg-white border border-slate-100 p-8 shadow-sm">
               <div className="flex items-center justify-between mb-10">
                 <h2 className="text-xl font-normal text-slate-800">Opiniones del producto</h2>
                 <div className="flex items-center gap-3">
@@ -178,10 +178,10 @@ export default async function ProductDetailPage({ params }: Props) {
               <ProductActions product={product} />
 
               {/* Seller Info */}
-              <div className="rounded-sm bg-white border border-slate-100 p-6 shadow-sm">
+              <div className="rounded-2xl bg-white border border-slate-100 p-6 shadow-sm">
                  <h3 className="text-lg font-bold text-slate-800 mb-4">Información sobre el vendedor</h3>
                  <div className="flex items-center gap-4 mb-6">
-                    <div className="w-12 h-12 bg-slate-100 rounded-sm flex items-center justify-center font-bold text-slate-600">
+                    <div className="w-12 h-12 bg-slate-100 rounded-2xl flex items-center justify-center font-bold text-slate-600">
                        {product.seller.nickname?.charAt(0)}
                     </div>
                     <div>

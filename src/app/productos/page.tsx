@@ -58,7 +58,7 @@ export default async function ProductosPage({ searchParams }: Props) {
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Sidebar */}
           <aside className="hidden lg:block w-72 shrink-0">
-            <div className="sticky top-24 rounded-sm bg-white p-6 shadow-sm border border-slate-100">
+            <div className="sticky top-24 rounded-2xl bg-white p-6 shadow-sm border border-slate-100">
               <FilterPanel categories={categories} />
             </div>
           </aside>
@@ -67,7 +67,7 @@ export default async function ProductosPage({ searchParams }: Props) {
           <main className="flex-1">
             <div className="mb-6 flex items-center justify-end gap-3">
               <span className="text-sm text-slate-400">Ordenar por:</span>
-              <button className="flex items-center gap-1 rounded-sm border border-slate-200 bg-white px-4 py-2 text-sm font-bold text-slate-700 hover:bg-slate-50">
+              <button className="flex items-center gap-1 rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-bold text-slate-700 hover:bg-slate-50">
                 Más recientes <ChevronDown size={14} />
               </button>
             </div>
@@ -79,7 +79,7 @@ export default async function ProductosPage({ searchParams }: Props) {
             </div>
 
             {products.length === 0 && (
-              <div className="py-24 text-center bg-white rounded-sm shadow-sm border border-slate-100">
+              <div className="py-24 text-center bg-white rounded-2xl shadow-sm border border-slate-100">
                 <div className="mb-4 inline-flex h-20 w-20 items-center justify-center rounded-full bg-slate-50 text-slate-300">
                   <Search size={40} />
                 </div>

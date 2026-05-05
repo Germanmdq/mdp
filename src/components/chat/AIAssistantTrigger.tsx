@@ -11,7 +11,7 @@ export default function AIAssistantTrigger() {
   return (
     <button 
       onClick={handleClick}
-      className="mt-4 rounded-sm bg-blue-600 px-8 py-4 text-sm font-bold text-white shadow-md hover:bg-blue-700 transition-all flex items-center gap-2"
+      className="mt-4 rounded-2xl bg-blue-600 px-8 py-4 text-sm font-bold text-white shadow-md hover:bg-blue-700 transition-all flex items-center gap-2"
     >
       <MessageSquare size={18} />
       Consultar al Asesor

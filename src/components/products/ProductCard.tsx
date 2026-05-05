@@ -25,7 +25,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
   return (
     <Link href={`/productos/${product.id}`} className="h-full">
-      <div className="group relative flex h-full flex-col overflow-hidden rounded-sm border border-transparent bg-white shadow-none transition-all hover:shadow-lg border-b-slate-100">
+      <div className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-transparent bg-white shadow-none transition-all hover:shadow-lg border-b-slate-100">
         
         <button 
           onClick={(e) => {
