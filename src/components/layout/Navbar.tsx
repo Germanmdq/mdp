@@ -7,9 +7,18 @@ import { useState, useRef, useEffect } from "react";
 import { PRODUCT_CATEGORIES } from "@/lib/data";
 
 export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [session, setSession] = useState<any>(null);
   const [query, setQuery] = useState("");
   const router = useRouter();
+
+  useEffect(() => {
+    const checkSession = async () => {
+      const { getSession } = await import("@/app/actions/auth");
+      const user = await getSession();
+      setSession(user);
+    };
+    checkSession();
+  }, []);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -82,17 +91,24 @@ export default function Navbar() {
 
           {/* Right: User Menu */}
           <div className="flex items-center gap-6 text-sm text-slate-400">
-            <div className="flex items-center gap-1 cursor-pointer hover:text-white">
-              <User size={18} className="text-blue-500/50" />
-              <span className="text-white font-medium">Germán</span>
-              <ChevronDown size={12} />
-            </div>
+            {session ? (
+              <div className="flex items-center gap-1 cursor-pointer hover:text-white">
+                <User size={18} className="text-blue-500/50" />
+                <span className="text-white font-medium">{session.name || session.email}</span>
+                <ChevronDown size={12} />
+              </div>
+            ) : (
+              <Link href="/acceso" className="hover:text-white flex items-center gap-2">
+                <User size={18} className="text-blue-200" />
+                Ingresar
+              </Link>
+            )}
             <Link href="/dashboard/usuario/compras" className="hover:text-white">Mis compras</Link>
             <Link href="/dashboard/usuario/favoritos" className="hover:text-white">Favoritos</Link>
             <Bell size={18} className="cursor-pointer hover:text-white" />
             <Link href="/checkout" className="relative group">
               <ShoppingCart size={18} className="group-hover:text-white" />
-              <span className="absolute -right-1 -top-1.5 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-blue-600 text-[8px] font-bold text-white">2</span>
+              <span className="absolute -right-1 -top-1.5 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-blue-600 text-[8px] font-bold text-white">0</span>
             </Link>
           </div>
         </div>

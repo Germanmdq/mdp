@@ -1,20 +1,26 @@
 "use client";
 
 import Link from "next/link";
-import { Product } from "@/lib/data";
-import { Zap, Heart, Star } from "lucide-react";
+import { Zap, Heart } from "lucide-react";
 import { useFavorites } from "@/contexts/FavoritesContext";
 
 interface ProductCardProps {
-  product: Product;
+  product: any; // Flexible for now, but will use Prisma type
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
   const { isProductFavorite, toggleProductFavorite } = useFavorites();
   const isFav = isProductFavorite(product.id);
 
-  const discount = product.original_price
-    ? Math.round((1 - product.price / product.original_price) * 100)
+  // Handle both Prisma and mock data structures
+  const price = product.price;
+  const originalPrice = product.originalPrice || product.original_price;
+  const freeShipping = product.freeShipping || product.shipping?.free_shipping;
+  const isFull = (product.logisticType || product.shipping?.logistic_type) === "fulfillment";
+  const sellerName = product.seller?.nickname || "Vendedor";
+
+  const discount = originalPrice
+    ? Math.round((1 - price / originalPrice) * 100)
     : null;
 
   return (
@@ -31,7 +37,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           <Heart size={18} className={isFav ? "fill-red-500 text-red-500" : ""} />
         </button>
 
-        {/* Image — contain on white background */}
+        {/* Image */}
         <div className="relative h-48 w-full shrink-0 overflow-hidden bg-white p-4">
           <img
             src={product.thumbnail}
@@ -49,19 +55,19 @@ export default function ProductCard({ product }: ProductCardProps) {
           
           <div className="mt-1">
             <div className="flex items-center gap-2">
-              <span className="text-2xl font-normal text-slate-900">${product.price.toLocaleString("es-AR")}</span>
-              {discount && (
+              <span className="text-2xl font-normal text-slate-900">${price.toLocaleString("es-AR")}</span>
+              {discount && discount > 0 && (
                 <span className="text-xs font-semibold text-green-600">{discount}% OFF</span>
               )}
             </div>
             
-            {product.shipping.free_shipping && (
+            {freeShipping && (
               <div className="mt-1 text-[12px] font-bold text-green-600">
                 Envío gratis
               </div>
             )}
 
-            {product.shipping.logistic_type === "fulfillment" && (
+            {isFull && (
               <div className="mt-1 flex items-center gap-1">
                  <span className="text-[12px] font-bold italic text-green-600">FULL</span>
                  <Zap size={12} className="text-green-600 fill-green-600" />
@@ -69,7 +75,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             )}
             
             <div className="mt-2 flex items-center gap-1">
-               <span className="text-[12px] text-slate-500">por {product.seller.nickname}</span>
+               <span className="text-[12px] text-slate-500">por {sellerName}</span>
             </div>
           </div>
         </div>

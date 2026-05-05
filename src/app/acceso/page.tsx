@@ -16,23 +16,29 @@ export default function AccesoPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError("");
 
-    // Simulación de login premium
-    setTimeout(() => {
-      if (email === "test@example.com" && password === "123456") {
+    try {
+      const { login } = await import("@/app/actions/auth");
+      const formData = new FormData();
+      formData.append("email", email);
+      formData.append("password", password);
+
+      const result = await login(formData);
+      if (result?.success) {
         router.push("/dashboard/usuario");
-      } else if (!email.includes("@")) {
-        setError("Por favor, ingresá un correo electrónico válido.");
-        setLoading(false);
-      } else {
-        // Para efectos de la demo, permitimos cualquier login
-        router.push("/dashboard/usuario");
+      } else if (result?.error) {
+        setError(result.error);
       }
-    }, 1500);
+    } catch (err) {
+      setError("Ocurrió un error inesperado.");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

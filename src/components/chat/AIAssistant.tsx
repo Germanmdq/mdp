@@ -32,7 +32,7 @@ export default function AIAssistant() {
     return () => window.removeEventListener('mdp-ai-guide', handleGuideEvent);
   }, []);
 
-  const handleSend = (text?: string) => {
+  const handleSend = async (text?: string) => {
     const userQuery = text || input.trim();
     if (!userQuery) return;
 
@@ -40,34 +40,35 @@ export default function AIAssistant() {
     setInput('');
     setIsTyping(true);
 
-    // AI Logic for MDP Market
-    setTimeout(() => {
-      const q = userQuery.toLowerCase();
+    try {
+      // 1. Fetch real products from search API
+      const res = await fetch(`/api/products/search?q=${encodeURIComponent(userQuery)}`);
+      const matches = await res.json();
+
       let response = "";
       let action = null;
 
-      if (q.includes("taladro") || q.includes("herramienta") || q.includes("bosch")) {
-        response = "Excelente elección. El Taladro Bosch GSB 18V-50 es el más potente que tenemos. Es Brushless y viene con maletín. ¿Querés que te lo muestre?";
-        action = { label: "Ver Taladro Bosch", href: "/productos/PROD_BOSCH_GSB18V" };
-      } else if (q.includes("iphone") || q.includes("apple") || q.includes("celular")) {
-        response = "En tecnología, el iPhone 15 Pro Max Titanium Natural es el rey. Lo tenemos con envío gratis en Mar del Plata.";
-        action = { label: "Ver iPhone 15 Pro Max", href: "/productos/PROD_IPHONE15_PM" };
-      } else if (q.includes("limpieza") || q.includes("skip") || q.includes("detergente")) {
-        response = "El Skip para diluir de 500ml es un éxito total porque rinde 3 litros y es súper económico. Está en oferta ahora mismo.";
-        action = { label: "Ver Jabón Skip", href: "/productos/PROD_SKIP_DILUIR" };
-      } else if (q.includes("oferta") || q.includes("barato") || q.includes("descuento")) {
-        response = "Tengo varias ofertas destacadas hoy. ¿Buscás algo para el hogar o tecnología?";
-        action = { label: "Ver todas las Ofertas", href: "/ofertas" };
-      } else if (q.includes("hola") || q.includes("buen")) {
-        response = "¡Hola! Estoy listo para ahorrarte tiempo. Decime qué producto buscás o qué presupuesto tenés y yo te guío.";
+      if (matches.length > 0) {
+        const topMatch = matches[0];
+        response = `¡Encontré algo perfecto! El "${topMatch.title}" por $${topMatch.price.toLocaleString("es-AR")} es una excelente opción. ¿Querés verlo en detalle?`;
+        action = { label: `Ver ${topMatch.title.split(' ').slice(0,3).join(' ')}...`, href: `/productos/${topMatch.id}` };
       } else {
-        response = `Entendido, estoy buscando "${userQuery}" en el catálogo... Tenemos varias opciones premium que coinciden. ¿Te gustaría ver los resultados de búsqueda?`;
-        action = { label: `Resultados para "${userQuery}"`, href: `/productos?q=${encodeURIComponent(userQuery)}` };
+        const q = userQuery.toLowerCase();
+        if (q.includes("hola") || q.includes("buen")) {
+          response = "¡Hola! Estoy listo para ahorrarte tiempo. Decime qué producto buscás y yo lo encuentro por vos.";
+        } else {
+          response = `Entendido, estoy buscando "${userQuery}"... No encontré una coincidencia exacta ahora mismo, pero te muestro lo más parecido en nuestro catálogo.`;
+          action = { label: `Ver resultados para "${userQuery}"`, href: `/productos?q=${encodeURIComponent(userQuery)}` };
+        }
       }
 
       setMessages(prev => [...prev, { role: 'bot', content: response, action: action || undefined }]);
+    } catch (error) {
+      console.error("AI Error:", error);
+      setMessages(prev => [...prev, { role: 'bot', content: "Ups, tuve un problemita técnico. ¿Podés intentar de nuevo?" }]);
+    } finally {
       setIsTyping(false);
-    }, 1200);
+    }
   };
 
   return (

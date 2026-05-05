@@ -1,15 +1,23 @@
-import { products } from "@/lib/data";
+import { prisma } from "@/lib/prisma";
 import ProductCard from "@/components/products/ProductCard";
-import { Zap, Flame, Percent, ChevronRight } from "lucide-react";
+import { Flame, Percent, ChevronRight } from "lucide-react";
 import Link from "next/link";
 
 export const metadata = {
   title: "Ofertas y Oportunidades | MDP Market",
 };
 
-export default function OfertasPage() {
-  // Mock offers: products that have original_price or are featured
-  const ofertas = products.filter(p => p.original_price || p.tags.includes("featured"));
+export default async function OfertasPage() {
+  // Real offers from DB
+  const ofertas = await prisma.product.findMany({
+    where: {
+      OR: [
+        { originalPrice: { gt: 0 } },
+        { tags: { contains: "featured" } }
+      ]
+    },
+    include: { seller: true }
+  });
 
   return (
     <div className="min-h-screen bg-[#ebebeb] pb-20">
@@ -46,18 +54,6 @@ export default function OfertasPage() {
       </div>
 
       <div className="container mx-auto px-4 max-w-7xl -mt-10 relative z-20">
-        {/* Filters */}
-        <div className="mb-8 flex gap-3 overflow-x-auto pb-4 scrollbar-hide">
-          <button className="whitespace-nowrap rounded-sm bg-white px-6 py-3 text-sm font-bold text-blue-600 shadow-sm border-b-2 border-blue-600 flex items-center gap-2">
-            <Percent size={16} /> Todas las ofertas
-          </button>
-          {["Tecnología", "Hogar", "Herramientas", "Indumentaria", "Supermercado"].map((cat) => (
-            <button key={cat} className="whitespace-nowrap rounded-sm bg-white px-6 py-3 text-sm font-bold text-slate-600 hover:bg-slate-50 transition-all border border-transparent shadow-sm">
-              {cat}
-            </button>
-          ))}
-        </div>
-
         {/* Grid */}
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 md:gap-4">
           {ofertas.map(product => (

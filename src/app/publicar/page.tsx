@@ -47,16 +47,33 @@ export default function PublicarProducto() {
     }, 1500);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
-    setTimeout(() => {
+    
+    const formData = new FormData(e.currentTarget);
+    // Add processed data
+    formData.append("images", JSON.stringify(uploadedImages));
+    formData.append("attributes", JSON.stringify([
+      { name: "Marca", value_name: formData.get("brand") },
+      { name: "Modelo", value_name: formData.get("model") }
+    ]));
+
+    try {
+      const { createProduct } = await import("@/app/actions/product");
+      const result = await createProduct(formData);
+      if (result.success) {
+        setCompleted(true);
+        setTimeout(() => {
+          router.push(`/productos/${result.id}`);
+        }, 2000);
+      }
+    } catch (error) {
+      console.error("Error publishing product:", error);
+      alert("Hubo un error al publicar el producto.");
+    } finally {
       setLoading(false);
-      setCompleted(true);
-      setTimeout(() => {
-        router.push("/dashboard/vendedor");
-      }, 2000);
-    }, 2000);
+    }
   };
 
   if (completed) {
@@ -132,11 +149,13 @@ export default function PublicarProducto() {
                   required 
                   autoFocus
                   type="text" 
+                  name="title"
                   value={formData.title}
                   onChange={(e) => setFormData({...formData, title: e.target.value})}
                   placeholder="Ej: Taladro Percutor Bosch GSB 18V-50" 
                   className="w-full text-2xl font-medium border-b-2 border-slate-200 py-4 outline-none focus:border-blue-600 transition-colors placeholder:text-slate-300" 
                 />
+                <input type="hidden" name="category" value={formData.category} />
                 <div className="flex gap-2">
                    <span className="text-xs bg-slate-100 text-slate-500 px-3 py-1.5 rounded-full font-medium">Sugerencia: Marca + Modelo + Características</span>
                 </div>
@@ -162,7 +181,7 @@ export default function PublicarProducto() {
                 <p className="text-slate-500">Detectamos que tu producto podría pertenecer a estas categorías:</p>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {["Herramientas", "Construcción", "Industrias y Oficinas"].map((cat) => (
+                {["Celulares y tecnología", "Hogar y muebles", "Herramientas", "Indumentaria", "Supermercado"].map((cat) => (
                   <button
                     key={cat}
                     type="button"
@@ -194,11 +213,11 @@ export default function PublicarProducto() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="space-y-2">
                   <label className="text-sm font-bold text-slate-700 uppercase tracking-wider">Marca</label>
-                  <input type="text" placeholder="Ej: Bosch" className="w-full rounded-xl border border-slate-200 px-5 py-3.5 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all" />
+                  <input name="brand" type="text" placeholder="Ej: Bosch" className="w-full rounded-xl border border-slate-200 px-5 py-3.5 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all" />
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-bold text-slate-700 uppercase tracking-wider">Modelo</label>
-                  <input type="text" placeholder="Ej: GSB 18V-50" className="w-full rounded-xl border border-slate-200 px-5 py-3.5 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all" />
+                  <input name="model" type="text" placeholder="Ej: GSB 18V-50" className="w-full rounded-xl border border-slate-200 px-5 py-3.5 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all" />
                 </div>
               </div>
 
@@ -222,7 +241,7 @@ export default function PublicarProducto() {
 
               <div className="space-y-2">
                 <label className="text-sm font-bold text-slate-700 uppercase tracking-wider">Descripción detallada</label>
-                <textarea rows={6} className="w-full rounded-2xl border border-slate-200 px-5 py-4 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all resize-none" placeholder="Describe los detalles, garantía, qué incluye el paquete..."></textarea>
+                <textarea name="description" rows={6} className="w-full rounded-2xl border border-slate-200 px-5 py-4 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all resize-none" placeholder="Describe los detalles, garantía, qué incluye el paquete..."></textarea>
               </div>
 
               <div className="pt-8 flex justify-between items-center">
@@ -245,13 +264,13 @@ export default function PublicarProducto() {
                     <label className="text-sm font-bold text-slate-700 uppercase tracking-wider">Precio de venta</label>
                     <div className="relative">
                       <span className="absolute left-5 top-1/2 -translate-y-1/2 text-2xl font-bold text-slate-400">$</span>
-                      <input required type="number" placeholder="0" className="w-full text-3xl font-bold rounded-2xl border border-slate-200 pl-12 pr-6 py-5 outline-none focus:border-blue-500 transition-all" />
+                      <input required name="price" type="number" placeholder="0" className="w-full text-3xl font-bold rounded-2xl border border-slate-200 pl-12 pr-6 py-5 outline-none focus:border-blue-500 transition-all" />
                     </div>
                     <p className="text-xs text-slate-400">MDP Market cobrará una comisión del 10% por venta.</p>
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-bold text-slate-700 uppercase tracking-wider">Stock</label>
-                    <input type="number" defaultValue="1" className="w-full rounded-xl border border-slate-200 px-5 py-4 outline-none focus:border-blue-500 transition-all" />
+                    <input name="stock" type="number" defaultValue="1" className="w-full rounded-xl border border-slate-200 px-5 py-4 outline-none focus:border-blue-500 transition-all" />
                   </div>
                 </div>
 
