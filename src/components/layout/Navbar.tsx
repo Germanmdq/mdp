@@ -71,11 +71,11 @@ export default function Navbar() {
           <nav>
             <ul className="flex items-center gap-6 text-sm font-medium text-slate-400">
               <li className="flex items-center gap-1 cursor-pointer hover:text-white transition-colors">Categorías <ChevronDown size={14} /></li>
-              <li><Link href="/productos" className="hover:text-white transition-colors">Ofertas</Link></li>
+              <li><Link href="/ofertas" className="hover:text-white transition-colors">Ofertas</Link></li>
               <li><Link href="/productos" className="hover:text-white transition-colors">Historial</Link></li>
               <li><Link href="/productos" className="hover:text-white transition-colors">Supermercado</Link></li>
               <li><Link href="/productos" className="hover:text-white transition-colors">Moda</Link></li>
-              <li><Link href="/servicios" className="hover:text-white transition-colors">Vender</Link></li>
+              <li><Link href="/publicar" className="hover:text-white transition-colors">Vender</Link></li>
               <li><Link href="/productos" className="hover:text-white transition-colors">Ayuda</Link></li>
             </ul>
           </nav>

@@ -15,7 +15,7 @@ export default function SellerDashboard() {
           <Link href="/productos?vendedor=me" className="rounded-full border border-blue-500 px-5 py-2 text-sm font-semibold text-blue-500 hover:bg-blue-50 transition-colors">
             Ver publicaciones
           </Link>
-          <Link href="/dashboard/vendedor/publicar" className="rounded-full bg-blue-600 px-5 py-2 text-sm font-semibold text-white hover:bg-blue-700 transition-colors">
+          <Link href="/publicar" className="rounded-full bg-blue-600 px-5 py-2 text-sm font-semibold text-white hover:bg-blue-700 transition-colors">
             Publicar producto
           </Link>
         </div>
