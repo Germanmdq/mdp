@@ -1,165 +1,158 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { Bot, X, Sparkles, Send, Loader2 } from "lucide-react";
-
-type Message = {
-  id: string;
-  role: "bot" | "user";
-  text: string;
-  action?: { label: string; url: string };
-};
+import React, { useState, useEffect, useRef } from 'react';
+import { Sparkles, X, Send, User, Bot, ShoppingBag, Search, MessageSquare, Zap, Loader2 } from 'lucide-react';
+import { products } from '@/lib/data';
+import { useRouter } from 'next/navigation';
 
 export default function AIAssistant() {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([
-    { id: "1", role: "bot", text: "¡Hola! Soy tu Asistente de Compra ✨. ¿Qué producto o servicio estás buscando hoy?" }
+  const [messages, setMessages] = useState<{ role: 'user' | 'bot', content: string, action?: { label: string, href: string } }[]>([
+    { role: 'bot', content: '¡Hola! Soy tu asesor personal de compras. 🎩\n\nNo pierdas tiempo navegando, preguntame directamente qué necesitás y yo lo encuentro por vos.' }
   ]);
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
-
   useEffect(() => {
-    scrollToBottom();
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
   }, [messages, isTyping]);
 
-  const handleSubmit = (e?: React.FormEvent, customQuery?: string) => {
-    if (e) e.preventDefault();
-    const queryToUse = customQuery || input.trim();
-    if (!queryToUse || isTyping) return;
+  const handleSend = (text?: string) => {
+    const userQuery = text || input.trim();
+    if (!userQuery) return;
 
-    const query = queryToUse;
-    const newUserMsg: Message = { id: Date.now().toString(), role: "user", text: query };
-    
-    setMessages(prev => [...prev, newUserMsg]);
-    setInput("");
+    setMessages(prev => [...prev, { role: 'user', content: userQuery }]);
+    setInput('');
     setIsTyping(true);
 
-    // Simulate AI thinking
+    // AI Logic for MDP Market
     setTimeout(() => {
-      setIsTyping(false);
-      
-      const isService = /plomer|gasista|electric|cerrajer|repar|pint|albañil/i.test(query);
-      const isOffers = /oferta|oportunidad|barato/i.test(query);
-      const isBestSellers = /vendido|popular/i.test(query);
-      
-      let url = "";
-      let label = "";
+      const q = userQuery.toLowerCase();
+      let response = "";
+      let action = null;
 
-      if (isOffers) {
-        url = "/ofertas";
-        label = "Ver Ofertas y Oportunidades";
-      } else if (isBestSellers) {
-        url = "/mas-vendidos";
-        label = "Ver Los Más Vendidos";
-      } else if (isService) {
-        url = `/servicios?q=${encodeURIComponent(query)}`;
-        label = `Ver servicios de ${query}`;
+      if (q.includes("taladro") || q.includes("herramienta") || q.includes("bosch")) {
+        response = "Excelente elección. El Taladro Bosch GSB 18V-50 es el más potente que tenemos. Es Brushless y viene con maletín. ¿Querés que te lo muestre?";
+        action = { label: "Ver Taladro Bosch", href: "/productos/PROD_BOSCH_GSB18V" };
+      } else if (q.includes("iphone") || q.includes("apple") || q.includes("celular")) {
+        response = "En tecnología, el iPhone 15 Pro Max Titanium Natural es el rey. Lo tenemos con envío gratis en Mar del Plata.";
+        action = { label: "Ver iPhone 15 Pro Max", href: "/productos/PROD_IPHONE15_PM" };
+      } else if (q.includes("limpieza") || q.includes("skip") || q.includes("detergente")) {
+        response = "El Skip para diluir de 500ml es un éxito total porque rinde 3 litros y es súper económico. Está en oferta ahora mismo.";
+        action = { label: "Ver Jabón Skip", href: "/productos/PROD_SKIP_DILUIR" };
+      } else if (q.includes("oferta") || q.includes("barato") || q.includes("descuento")) {
+        response = "Tengo varias ofertas destacadas hoy. ¿Buscás algo para el hogar o tecnología?";
+        action = { label: "Ver todas las Ofertas", href: "/ofertas" };
+      } else if (q.includes("hola") || q.includes("buen")) {
+        response = "¡Hola! Estoy listo para ahorrarte tiempo. Decime qué producto buscás o qué presupuesto tenés y yo te guío.";
       } else {
-        url = `/productos?q=${encodeURIComponent(query)}`;
-        label = `Ver resultados para "${query}"`;
+        response = `Entendido, estoy buscando "${userQuery}" en el catálogo... Tenemos varias opciones premium que coinciden. ¿Te gustaría ver los resultados de búsqueda?`;
+        action = { label: `Resultados para "${userQuery}"`, href: `/productos?q=${encodeURIComponent(userQuery)}` };
       }
 
-      setMessages(prev => [
-        ...prev, 
-        { 
-          id: Date.now().toString(), 
-          role: "bot", 
-          text: `¡Perfecto! Encontré excelentes opciones para tu búsqueda.`,
-          action: { label, url }
-        }
-      ]);
+      setMessages(prev => [...prev, { role: 'bot', content: response, action: action || undefined }]);
+      setIsTyping(false);
     }, 1200);
   };
 
   return (
-    <>
-      {/* Floating Button */}
-      <button
-        onClick={() => setIsOpen(true)}
-        className={`fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-slate-900 text-white shadow-xl transition-transform hover:scale-110 ${isOpen ? 'scale-0 opacity-0' : 'scale-100 opacity-100'} md:bottom-8 md:right-8`}
-      >
-        <Sparkles size={24} className="animate-pulse text-blue-400" />
-      </button>
+    <div className="fixed bottom-6 right-6 z-[100] font-sans">
+      {/* Trigger Button */}
+      {!isOpen && (
+        <button
+          id="ai-assistant-trigger"
+          onClick={() => setIsOpen(true)}
+          className="group relative flex items-center gap-3 overflow-hidden rounded-full bg-slate-900 p-2 pr-5 text-white shadow-[0_20px_50px_rgba(0,0,0,0.3)] transition-all hover:scale-105 active:scale-95 border border-white/10"
+        >
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-600 text-white shadow-lg group-hover:rotate-12 transition-transform">
+            <Sparkles size={24} fill="currentColor" />
+          </div>
+          <div className="flex flex-col items-start">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-blue-400">Asesor AI</span>
+            <span className="text-sm font-bold leading-tight">¿Qué buscás hoy?</span>
+          </div>
+          <div className="absolute -right-1 -top-1 flex h-4 w-4">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-4 w-4 bg-blue-500"></span>
+          </div>
+        </button>
+      )}
 
       {/* Chat Window */}
-      <div
-        className={`fixed bottom-0 right-0 z-50 h-[85vh] w-full bg-white shadow-2xl transition-transform duration-300 ease-out sm:bottom-6 sm:right-6 sm:h-[500px] sm:w-[380px] sm:rounded-3xl border border-slate-100 ${
-          isOpen ? "translate-y-0" : "translate-y-[120%]"
-        }`}
-      >
-        <div className="flex h-full flex-col">
+      {isOpen && (
+        <div className="flex h-[550px] w-[380px] flex-col overflow-hidden rounded-[2.5rem] bg-white shadow-[0_30px_100px_rgba(0,0,0,0.4)] animate-in slide-in-from-bottom-8 fade-in duration-500 border border-slate-100">
           {/* Header */}
-          <div className="flex items-center justify-between rounded-t-3xl bg-slate-900 px-6 py-4 text-white">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-600/20">
-                <Bot size={20} className="text-blue-400" />
+          <div className="flex items-center justify-between bg-slate-900 p-6 text-white">
+            <div className="flex items-center gap-4">
+              <div className="relative">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-600 rotate-3 shadow-lg">
+                  <Bot size={24} />
+                </div>
+                <div className="absolute -bottom-1 -right-1 h-4 w-4 rounded-full border-2 border-slate-900 bg-green-500"></div>
               </div>
               <div>
-                <h3 className="font-bold leading-none">MDP Assistant</h3>
-                <span className="text-[10px] font-medium text-green-400">En línea</span>
+                <div className="text-base font-bold">Asesor de Compras</div>
+                <div className="text-[11px] font-medium text-blue-400">Mar del Plata • Inteligencia Artificial</div>
               </div>
             </div>
-            <button
-              onClick={() => setIsOpen(false)}
-              className="rounded-full p-2 text-slate-400 hover:bg-slate-800 hover:text-white transition-colors"
-            >
+            <button onClick={() => setIsOpen(false)} className="rounded-full bg-white/10 p-2 text-white/70 hover:bg-white/20 hover:text-white transition-all">
               <X size={20} />
             </button>
           </div>
 
-          {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-slate-50/50">
-            {messages.map((msg) => (
-              <div
-                key={msg.id}
-                className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
-              >
-                <div className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm shadow-sm ${msg.role === "user" ? "bg-blue-600 text-white rounded-tr-sm" : "bg-white text-slate-700 border border-slate-100 rounded-tl-sm"}`}>
-                  <p>{msg.text}</p>
+          {/* Messages Area */}
+          <div ref={scrollRef} className="flex-1 overflow-y-auto bg-slate-50/50 p-6 space-y-6">
+            {messages.map((msg, i) => (
+              <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                <div className={`relative max-w-[85%] rounded-[1.5rem] p-4 text-sm shadow-sm ${
+                  msg.role === 'user' 
+                    ? 'bg-blue-600 text-white rounded-tr-none' 
+                    : 'bg-white text-slate-800 border border-slate-100 rounded-tl-none'
+                }`}>
+                  <p className="whitespace-pre-wrap leading-relaxed">{msg.content}</p>
+                  
                   {msg.action && (
-                    <button
-                      onClick={() => {
-                        setIsOpen(false);
-                        router.push(msg.action!.url);
-                        setTimeout(() => {
-                          setMessages([{ id: "1", role: "bot", text: "¡Hola! Soy tu Asistente de Compra ✨. ¿Qué producto o servicio estás buscando hoy?" }]);
-                        }, 500);
-                      }}
-                      className="mt-3 block w-full rounded-xl bg-blue-50 py-2.5 text-center font-bold text-blue-600 hover:bg-blue-100 transition-colors"
-                    >
-                      {msg.action.label}
-                    </button>
+                    <div className="mt-4">
+                      <button 
+                        onClick={() => {
+                          setIsOpen(false);
+                          router.push(msg.action!.href);
+                        }}
+                        className="flex w-full items-center justify-center gap-2 rounded-2xl bg-slate-900 py-3 px-4 text-xs font-bold text-white shadow-md hover:bg-slate-800 transition-all hover:translate-y-[-2px] active:translate-y-0"
+                      >
+                        <Zap size={14} fill="currentColor" className="text-amber-400" />
+                        {msg.action.label}
+                      </button>
+                    </div>
                   )}
                 </div>
               </div>
             ))}
             {isTyping && (
               <div className="flex justify-start">
-                <div className="flex gap-1 rounded-2xl rounded-tl-sm bg-white px-4 py-4 border border-slate-100 shadow-sm">
-                  <div className="h-1.5 w-1.5 animate-bounce rounded-full bg-slate-400 [animation-delay:-0.3s]"></div>
-                  <div className="h-1.5 w-1.5 animate-bounce rounded-full bg-slate-400 [animation-delay:-0.15s]"></div>
-                  <div className="h-1.5 w-1.5 animate-bounce rounded-full bg-slate-400"></div>
+                <div className="bg-white rounded-[1.5rem] rounded-tl-none p-4 shadow-sm border border-slate-100">
+                  <div className="flex gap-1.5">
+                    <span className="h-2 w-2 rounded-full bg-blue-500 animate-bounce [animation-delay:-0.3s]"></span>
+                    <span className="h-2 w-2 rounded-full bg-blue-500 animate-bounce [animation-delay:-0.15s]"></span>
+                    <span className="h-2 w-2 rounded-full bg-blue-500 animate-bounce"></span>
+                  </div>
                 </div>
               </div>
             )}
-            <div ref={messagesEndRef} />
           </div>
 
-          {/* Suggestions */}
-          {!isTyping && messages.length === 1 && (
-            <div className="flex flex-wrap gap-2 px-6 pb-4">
-              {["🔥 Busco ofertas", "⭐ Los más vendidos", "⚡ Oportunidades"].map((sug, i) => (
-                <button
+          {/* Quick Suggestions */}
+          {!isTyping && (
+            <div className="flex gap-2 overflow-x-auto p-4 bg-white border-t border-slate-50 scrollbar-hide">
+              {["¿Qué ofertas hay hoy?", "Buscame un iPhone", "Taladro Bosch", "Jabón Skip"].map((sug, i) => (
+                <button 
                   key={i}
-                  onClick={() => handleSubmit(undefined, sug)}
-                  className="rounded-full border border-blue-100 bg-blue-50 px-3 py-1.5 text-[11px] font-bold text-blue-700 transition-colors hover:bg-blue-100"
+                  onClick={() => handleSend(sug)}
+                  className="whitespace-now800 shrink-0 rounded-full border border-slate-200 bg-white px-4 py-2 text-[11px] font-bold text-slate-600 hover:border-blue-500 hover:text-blue-600 transition-all active:scale-95"
                 >
                   {sug}
                 </button>
@@ -168,30 +161,31 @@ export default function AIAssistant() {
           )}
 
           {/* Input Area */}
-          <form onSubmit={(e) => handleSubmit(e)} className="border-t border-slate-100 bg-white p-4 sm:rounded-b-3xl">
-            <div className="flex items-center gap-2">
+          <div className="p-6 bg-white pt-2">
+            <div className="relative flex items-center">
               <input
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Ej: Necesito zapatillas talle 42..."
-                className="flex-1 rounded-full border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none transition-colors focus:border-blue-500 focus:bg-white"
-                disabled={isTyping}
+                onKeyDown={(e) => e.key === 'Enter' && handleSend()}
+                placeholder="Preguntame qué querés y te ahorro tiempo..."
+                className="w-full rounded-[1.5rem] border border-slate-200 bg-slate-50 py-4 pl-5 pr-14 text-sm font-medium focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-blue-500/5 transition-all"
               />
-              <button
-                type="submit"
+              <button 
+                onClick={() => handleSend()}
                 disabled={!input.trim() || isTyping}
-                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-blue-600 text-white transition-all hover:bg-blue-700 disabled:opacity-50 disabled:hover:bg-blue-600 shadow-sm"
+                className="absolute right-2 flex h-10 w-10 items-center justify-center rounded-2xl bg-blue-600 text-white shadow-lg transition-all hover:bg-blue-700 disabled:bg-slate-300 disabled:shadow-none"
               >
-                {isTyping ? <Loader2 size={18} className="animate-spin" /> : <Send size={18} className="ml-0.5" />}
+                {isTyping ? <Loader2 size={18} className="animate-spin" /> : <Send size={18} />}
               </button>
             </div>
-            <div className="mt-3 text-center text-[10px] text-slate-400 font-medium">
-              Asistente virtual impulsado para conectar con vendedores locales
+            <div className="mt-4 flex items-center justify-center gap-2 text-[10px] font-bold uppercase tracking-widest text-slate-400">
+              <Sparkles size={10} className="text-blue-500" />
+              <span>MDP Market AI Guide</span>
             </div>
-          </form>
+          </div>
         </div>
-      </div>
-    </>
+      )}
+    </div>
   );
 }

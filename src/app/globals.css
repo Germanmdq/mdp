@@ -62,3 +62,12 @@ body {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-400;
   }
 }
+
+@keyframes progress-fast {
+  0% { width: 0%; }
+  100% { width: 100%; }
+}
+
+.animate-progress-fast {
+  animation: progress-fast 1.5s ease-in-out infinite;
+}

@@ -20,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body className={`${inter.className} antialiased bg-[#050505] text-slate-200 flex flex-col min-h-screen`}>
+      <body className={`${inter.className} antialiased bg-[#ebebeb] text-slate-900 flex flex-col min-h-screen`}>
         <FavoritesProvider>
           <Navbar />
           <main className="flex-1">

@@ -5,6 +5,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { products, PRODUCT_CATEGORIES } from "@/lib/data";
 import ProductCard from "@/components/products/ProductCard";
 import { Search, SlidersHorizontal, ChevronDown, X } from "lucide-react";
+import { ProductGridSkeleton } from "@/components/ui/ProductSkeleton";
 
 function ProductosPage() {
   const searchParams = useSearchParams();
@@ -225,7 +226,16 @@ function ProductosPage() {
 
 export default function ProductosPageWrapper() {
   return (
-    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Cargando...</div>}>
+    <Suspense fallback={
+      <div className="bg-[#ebebeb] min-h-screen">
+        <div className="bg-white border-b py-10 shadow-sm mb-6">
+          <div className="container mx-auto px-4 h-12 w-48 bg-slate-100 rounded-lg animate-pulse" />
+        </div>
+        <div className="container mx-auto px-4">
+          <ProductGridSkeleton />
+        </div>
+      </div>
+    }>
       <ProductosPage />
     </Suspense>
   );
