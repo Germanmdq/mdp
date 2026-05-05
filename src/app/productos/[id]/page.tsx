@@ -22,13 +22,12 @@ export default function ProductDetailPage() {
   };
 
   const triggerConsult = () => {
-    const aiBtn = document.getElementById('ai-assistant-trigger');
-    if (aiBtn) {
-      aiBtn.click();
-      // En un sistema real, pasaríamos el contexto del producto al chat
-    } else {
-      alert("Consultando con el vendedor... (Simulación)");
-    }
+    const event = new CustomEvent('mdp-ai-guide', { 
+      detail: { 
+        message: `Hola, me interesa el producto "${product.title}". ¿Me podrías dar más detalles o ayudarme con la compra?` 
+      } 
+    });
+    window.dispatchEvent(event);
   };
 
   const relatedProducts = products

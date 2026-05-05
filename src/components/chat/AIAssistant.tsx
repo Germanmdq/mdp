@@ -21,6 +21,17 @@ export default function AIAssistant() {
     }
   }, [messages, isTyping]);
 
+  useEffect(() => {
+    const handleGuideEvent = (e: any) => {
+      setIsOpen(true);
+      if (e.detail?.message) {
+        handleSend(e.detail.message);
+      }
+    };
+    window.addEventListener('mdp-ai-guide', handleGuideEvent);
+    return () => window.removeEventListener('mdp-ai-guide', handleGuideEvent);
+  }, []);
+
   const handleSend = (text?: string) => {
     const userQuery = text || input.trim();
     if (!userQuery) return;
